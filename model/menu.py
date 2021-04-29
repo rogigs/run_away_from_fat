@@ -50,7 +50,7 @@ class Menu:
     def scale_it(self, img):
         return pygame.transform.scale(
             img,
-            (int(self.width / 3), 64))
+            (int(self.width / 3), 100))
 
     def detect_press(self, pos):
         x, y = pos
@@ -65,3 +65,8 @@ class Menu:
         elif (self.width / 3 <= x <= self.width / 3 + self.leave_img.get_width() and
               self.height / 5 <= y <= self.height / 5 * 4 + self.leave_img.get_height()):
             self.press_leave()
+
+    def detect_drop(self):
+        self.drop_leave()
+        self.drop_new()
+        self.drop_continue()
