@@ -4,10 +4,11 @@ from sys import exit
 from model.menu import Menu
 
 pygame.init()
+pygame.display.set_caption("Run Away from Fat")
 SCREEN_SIZE = (1280, 720)
 screen = pygame.display.set_mode(SCREEN_SIZE, 0, 32)
 
-menu = Menu(screen)
+menu = Menu(screen, )
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -19,6 +20,5 @@ while True:
             menu.detect_drop()
 
     menu.show()
-
 
     pygame.display.update()
