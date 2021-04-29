@@ -1,4 +1,5 @@
 import pygame
+from config import MENU_IMAGES_PATH
 
 
 class Menu:
@@ -9,43 +10,53 @@ class Menu:
         self.new_game = new_game
         self.continue_game = continue_game
 
-        self.continue_img = self.scale_it(pygame.image.load("img/menu/continuar-jogo.png").convert_alpha())
-        self.new_img = self.scale_it(pygame.image.load("img/menu/novo-jogo.png").convert_alpha())
-        self.leave_img = self.scale_it(pygame.image.load("img/menu/sair.png").convert_alpha())
+        self.continue_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "continuar-jogo.png").convert_alpha())
+        self.new_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "novo-jogo.png").convert_alpha())
+        self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair.png").convert_alpha())
 
     def continue_g(self, x, y):
+        """Shows 'continuar' button"""
         self.screen.blit(self.continue_img, (x, y))
 
     def new_g(self, x, y):
+        """Shows 'Novo Jogo' button"""
         self.screen.blit(self.new_img, (x, y))
 
     def leave_g(self, x, y):
+        """Shows 'Sair' button"""
         self.screen.blit(self.leave_img, (x, y))
 
     def show(self):
-        bg = pygame.transform.scale(pygame.image.load("img/menu/background.png"), (self.width, self.height))
+        """Show menu."""
+        bg = pygame.transform.scale(pygame.image.load(MENU_IMAGES_PATH + "background.png"), (self.width, self.height))
         self.screen.blit(bg, (0, 0))
         self.continue_g(self.width / 3, self.height / 5 * 2)
         self.new_g(self.width / 3, self.height / 5 * 3)
         self.leave_g(self.width / 3, self.height / 5 * 4)
 
     def press_continue(self):
-        self.continue_img = self.scale_it(pygame.image.load(f"img/menu/continuar-jogo-pressed.png").convert_alpha())
+        """Changes 'continuar' image to its pressed version."""
+        self.continue_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "continuar-jogo-pressed.png").convert_alpha())
 
     def drop_continue(self):
-        self.continue_img = self.scale_it(pygame.image.load("img/menu/continuar-jogo.png").convert_alpha())
+        """Changes 'continuar' image to its unpressed version."""
+        self.continue_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "continuar-jogo.png").convert_alpha())
 
     def press_new(self):
-        self.new_img = self.scale_it(pygame.image.load(f"img/menu/novo-jogo-pressed.png").convert_alpha())
+        """Changes 'Novo jogo' image to its pressed version."""
+        self.new_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "novo-jogo-pressed.png").convert_alpha())
 
     def drop_new(self):
-        self.new_img = self.scale_it(pygame.image.load("img/menu/novo-jogo.png").convert_alpha())
+        """Changes 'Novo jogo' image to its unpressed version."""
+        self.new_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "novo-jogo.png").convert_alpha())
 
     def press_leave(self):
-        self.leave_img = self.scale_it(pygame.image.load("img/menu/sair-pressed.png").convert_alpha())
+        """Changes 'Sair' image to its pressed version."""
+        self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair-pressed.png").convert_alpha())
 
     def drop_leave(self):
-        self.leave_img = self.scale_it(pygame.image.load("img/menu/sair.png").convert_alpha())
+        """Changes 'Novo jogo' image to its unpressed version."""
+        self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair.png").convert_alpha())
 
     def scale_it(self, img):
         return pygame.transform.scale(
