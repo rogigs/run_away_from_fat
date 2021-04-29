@@ -2,6 +2,11 @@ import pygame
 from config import MENU_IMAGES_PATH
 
 
+def leave_game():
+    pygame.quit()
+    exit()
+
+
 class Menu:
 
     def __init__(self, screen, new_game=None, continue_game=None):
@@ -55,7 +60,7 @@ class Menu:
         self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair-pressed.png").convert_alpha())
 
     def drop_leave(self):
-        """Changes 'Novo jogo' image to its unpressed version."""
+        """Changes 'Novo jogo' image to its unpressed version and quit game."""
         self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair.png").convert_alpha())
 
     def scale_it(self, img):
@@ -65,19 +70,30 @@ class Menu:
 
     def detect_press(self, pos):
         x, y = pos
-        # for continue button
         if (self.width / 3 <= x <= self.width / 3 + self.continue_img.get_width() and
                 self.height / 5 <= y <= self.height / 5 * 2 + self.continue_img.get_height()):
             self.press_continue()
-        # for new game
+
+        elif (self.width / 3 <= x <= self.width / 3 + self.new_img.get_width() and
+              self.height / 5 <= y <= self.height / 5 * 3 + self.new_img.get_height()):
+            self.press_new()
+
+        elif (self.width / 3 <= x <= self.width / 3 + self.leave_img.get_width() and
+              self.height / 5 <= y <= self.height / 5 * 4 + self.leave_img.get_height()):
+            self.press_leave()
+
+    def detect_drop(self, pos):
+        x, y = pos
+        self.drop_leave()
+        self.drop_new()
+        self.drop_continue()
+
+        if (self.width / 3 <= x <= self.width / 3 + self.continue_img.get_width() and
+                self.height / 5 <= y <= self.height / 5 * 2 + self.continue_img.get_height()):
+            self.press_continue()
         elif (self.width / 3 <= x <= self.width / 3 + self.new_img.get_width() and
               self.height / 5 <= y <= self.height / 5 * 3 + self.new_img.get_height()):
             self.press_new()
         elif (self.width / 3 <= x <= self.width / 3 + self.leave_img.get_width() and
               self.height / 5 <= y <= self.height / 5 * 4 + self.leave_img.get_height()):
-            self.press_leave()
-
-    def detect_drop(self):
-        self.drop_leave()
-        self.drop_new()
-        self.drop_continue()
+            leave_game()
