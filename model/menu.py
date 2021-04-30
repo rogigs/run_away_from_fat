@@ -41,7 +41,8 @@ class Menu:
 
     def press_continue(self):
         """Changes 'continuar' image to its pressed version."""
-        self.continue_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "continuar-jogo-pressed.png").convert_alpha())
+        self.continue_img = self.scale_it(
+            pygame.image.load(MENU_IMAGES_PATH + "continuar-jogo-pressed.png").convert_alpha())
 
     def drop_continue(self):
         """Changes 'continuar' image to its unpressed version."""
@@ -64,36 +65,40 @@ class Menu:
         self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair.png").convert_alpha())
 
     def scale_it(self, img):
+        """Adjust buttons to be a third of screen with 100 oh height."""
         return pygame.transform.scale(
             img,
             (int(self.width / 3), 100))
 
     def detect_press(self, pos):
+        """Detect presses on buttons."""
+
         x, y = pos
         if (self.width / 3 <= x <= self.width / 3 + self.continue_img.get_width() and
-                self.height / 5 <= y <= self.height / 5 * 2 + self.continue_img.get_height()):
+                self.height / 5 * 2 <= y <= self.height / 5 * 2 + self.continue_img.get_height()):
             self.press_continue()
 
         elif (self.width / 3 <= x <= self.width / 3 + self.new_img.get_width() and
-              self.height / 5 <= y <= self.height / 5 * 3 + self.new_img.get_height()):
+              self.height / 5 * 3 <= y <= self.height / 5 * 3 + self.new_img.get_height()):
             self.press_new()
 
         elif (self.width / 3 <= x <= self.width / 3 + self.leave_img.get_width() and
-              self.height / 5 <= y <= self.height / 5 * 4 + self.leave_img.get_height()):
+              self.height / 5 * 4 <= y <= self.height / 5 * 4 + self.leave_img.get_height()):
             self.press_leave()
 
     def detect_drop(self, pos):
+        """Detect drop on buttons."""
         x, y = pos
+
+        if (self.width / 3 <= x <= self.width / 3 + self.continue_img.get_width() and
+                self.height / 5 * 2 <= y <= self.height / 5 * 2 + self.continue_img.get_height()):
+            self.press_continue()
+        elif (self.width / 3 <= x <= self.width / 3 + self.new_img.get_width() and
+              self.height / 5 * 3 <= y <= self.height / 5 * 3 + self.new_img.get_height()):
+            self.press_new()
+        elif (self.width / 3 <= x <= self.width / 3 + self.leave_img.get_width() and
+              self.height / 5 * 4 <= y <= self.height / 5 * 4 + self.leave_img.get_height()):
+            leave_game()
         self.drop_leave()
         self.drop_new()
         self.drop_continue()
-
-        if (self.width / 3 <= x <= self.width / 3 + self.continue_img.get_width() and
-                self.height / 5 <= y <= self.height / 5 * 2 + self.continue_img.get_height()):
-            self.press_continue()
-        elif (self.width / 3 <= x <= self.width / 3 + self.new_img.get_width() and
-              self.height / 5 <= y <= self.height / 5 * 3 + self.new_img.get_height()):
-            self.press_new()
-        elif (self.width / 3 <= x <= self.width / 3 + self.leave_img.get_width() and
-              self.height / 5 <= y <= self.height / 5 * 4 + self.leave_img.get_height()):
-            leave_game()
