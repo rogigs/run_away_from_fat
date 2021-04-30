@@ -24,7 +24,7 @@ while True:
     menu.show()
 
     # ESSE TRECHO DE CÓDIGO DEVE IR PARA A INTERFACE
-    character = Character('Usain', SCREEN)
-    character.draw(50, 100)
+    # character = Character('Usain', SCREEN)
+    # character.draw(50, 100)
 
     pygame.display.update()

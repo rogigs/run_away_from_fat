@@ -5,13 +5,7 @@ from model.new_game import NewGame
 from config import MENU_IMAGES_PATH, IMAGES_PATH
 
 
-def leave_game():
-    pygame.quit()
-    exit()
-
-
 class Menu:
-
     def __init__(self, screen, continue_game=None):
         self.width, self.height = pygame.display.get_surface().get_size()
         self.screen = screen
@@ -54,7 +48,7 @@ class Menu:
 
     def drop_continue(self):
         """Changes 'continuar' image to its unpressed version."""
-        self.continue_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "continuar-jogo.png").convert_alpha())
+        pass
 
     def press_new(self):
         """Changes 'Novo jogo' image to its pressed version."""
@@ -62,7 +56,6 @@ class Menu:
 
     def drop_new(self):
         """Changes 'Novo jogo' image to its unpressed version. And go to person creation."""
-        self.new_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "novo-jogo.png").convert_alpha())
         self.new_game.show()
 
     def press_leave(self):
@@ -71,7 +64,8 @@ class Menu:
 
     def drop_leave(self):
         """Changes 'Novo jogo' image to its unpressed version and quit game."""
-        self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair.png").convert_alpha())
+        pygame.quit()
+        exit()
 
     def scale_it(self, img):
         """Adjust buttons to be a third of screen with 100 oh height."""
@@ -97,16 +91,19 @@ class Menu:
 
     def detect_drop(self, pos):
         """Detect drop on buttons."""
+        self.reset_imgs()
         x, y = pos
         if (self.width / 3 <= x <= self.width / 3 + self.continue_img.get_width() and
                 self.height / 5 * 2 <= y <= self.height / 5 * 2 + self.continue_img.get_height()):
-            self.press_continue()
+            self.drop_continue()
         elif (self.width / 3 <= x <= self.width / 3 + self.new_img.get_width() and
               self.height / 5 * 3 <= y <= self.height / 5 * 3 + self.new_img.get_height()):
-            self.press_new()
+            self.drop_new()
         elif (self.width / 3 <= x <= self.width / 3 + self.leave_img.get_width() and
               self.height / 5 * 4 <= y <= self.height / 5 * 4 + self.leave_img.get_height()):
-            leave_game()
-        self.drop_leave()
-        self.drop_new()
-        self.drop_continue()
+            self.drop_leave()
+
+    def reset_imgs(self):
+        self.new_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "novo-jogo.png").convert_alpha())
+        self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair.png").convert_alpha())
+        self.continue_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "continuar-jogo.png").convert_alpha())
