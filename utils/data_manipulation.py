@@ -29,3 +29,17 @@ class Data:
             return True
         conn.close()
         return False
+
+    @staticmethod
+    def create_new_person(who):
+        try:
+            conn = sqlite3.connect("database.db")
+            c = conn.cursor()
+            if c.execute("SELECT * FROM user").fetchone():
+                c.execute("DELETE FROM user where days>=0")
+            c.execute("INSERT INTO user values (?, ?, ?, ?, ?, ?)", [who, 0, 0, 0, 0, 0])
+            conn.commit()
+            conn.close()
+            return True
+        except Exception as ex:
+            print(ex)
