@@ -1,5 +1,6 @@
 import pygame
 from config import MENU_IMAGES_PATH
+from utils.data_manipulation import Data
 
 
 def leave_game():
@@ -15,6 +16,7 @@ class Menu:
         self.new_game = new_game
         self.continue_game = continue_game
 
+        self.has_save = Data.has_save()
         self.continue_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "continuar-jogo.png").convert_alpha())
         self.new_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "novo-jogo.png").convert_alpha())
         self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair.png").convert_alpha())
@@ -35,7 +37,8 @@ class Menu:
         """Show menu."""
         bg = pygame.transform.scale(pygame.image.load(MENU_IMAGES_PATH + "background.png"), (self.width, self.height))
         self.screen.blit(bg, (0, 0))
-        self.continue_g(self.width / 3, self.height / 5 * 2)
+        if self.has_save:
+            self.continue_g(self.width / 3, self.height / 5 * 2)
         self.new_g(self.width / 3, self.height / 5 * 3)
         self.leave_g(self.width / 3, self.height / 5 * 4)
 
