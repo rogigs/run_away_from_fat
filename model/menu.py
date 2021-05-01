@@ -3,25 +3,32 @@ from config import MENU_IMAGES_PATH
 from utils.data_manipulation import Data
 from model.new_game import NewGame
 from config import MENU_IMAGES_PATH, IMAGES_PATH
+from model.control_character import Control_character
 
 
 class Menu:
     def __init__(self, screen, continue_game=None):
         self.width, self.height = pygame.display.get_surface().get_size()
         self.screen = screen
-        self.bg = pygame.transform.scale(pygame.image.load(IMAGES_PATH + "bg.png"), (self.width, self.height))
+        self.bg = pygame.transform.scale(pygame.image.load(
+            IMAGES_PATH + "bg.png"), (self.width, self.height))
         self.title = pygame.transform.scale(pygame.image.load(MENU_IMAGES_PATH + "titulo.png"),
                                             (int(self.width / 12 * 7), int(self.height / 5)))
         self.continue_game = continue_game
         self.new_game = NewGame(screen, self.bg)
 
         self.has_save = Data.has_save()
-        self.continue_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "continuar-jogo.png").convert_alpha())
-        self.new_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "novo-jogo.png").convert_alpha())
-        self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair.png").convert_alpha())
+        self.continue_img = self.scale_it(pygame.image.load(
+            MENU_IMAGES_PATH + "continuar-jogo.png").convert_alpha())
+        self.new_img = self.scale_it(pygame.image.load(
+            MENU_IMAGES_PATH + "novo-jogo.png").convert_alpha())
+        self.leave_img = self.scale_it(pygame.image.load(
+            MENU_IMAGES_PATH + "sair.png").convert_alpha())
 
     def continue_g(self, x, y):
         """Shows 'continuar' button"""
+        c = Control_character()
+        c.get_character('U')
         self.screen.blit(self.continue_img, (x, y))
 
     def new_g(self, x, y):
@@ -35,7 +42,8 @@ class Menu:
     def show(self):
         """Show menu."""
         self.screen.blit(self.bg, (0, 0))
-        self.screen.blit(self.title, (self.width / 2 - self.title.get_width() / 2, 50))
+        self.screen.blit(self.title, (self.width / 2 -
+                         self.title.get_width() / 2, 50))
         if self.has_save:
             self.continue_g(self.width / 3, self.height / 5 * 2)
         self.new_g(self.width / 3, self.height / 5 * 3)
@@ -52,7 +60,8 @@ class Menu:
 
     def press_new(self):
         """Changes 'Novo jogo' image to its pressed version."""
-        self.new_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "novo-jogo-pressed.png").convert_alpha())
+        self.new_img = self.scale_it(pygame.image.load(
+            MENU_IMAGES_PATH + "novo-jogo-pressed.png").convert_alpha())
 
     def drop_new(self):
         """Changes 'Novo jogo' image to its unpressed version. And go to person creation."""
@@ -60,7 +69,8 @@ class Menu:
 
     def press_leave(self):
         """Changes 'Sair' image to its pressed version."""
-        self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair-pressed.png").convert_alpha())
+        self.leave_img = self.scale_it(pygame.image.load(
+            MENU_IMAGES_PATH + "sair-pressed.png").convert_alpha())
 
     def drop_leave(self):
         """Changes 'Novo jogo' image to its unpressed version and quit game."""
@@ -104,6 +114,9 @@ class Menu:
             self.drop_leave()
 
     def reset_imgs(self):
-        self.new_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "novo-jogo.png").convert_alpha())
-        self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair.png").convert_alpha())
-        self.continue_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "continuar-jogo.png").convert_alpha())
+        self.new_img = self.scale_it(pygame.image.load(
+            MENU_IMAGES_PATH + "novo-jogo.png").convert_alpha())
+        self.leave_img = self.scale_it(pygame.image.load(
+            MENU_IMAGES_PATH + "sair.png").convert_alpha())
+        self.continue_img = self.scale_it(pygame.image.load(
+            MENU_IMAGES_PATH + "continuar-jogo.png").convert_alpha())

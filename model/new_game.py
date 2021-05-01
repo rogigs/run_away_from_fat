@@ -16,7 +16,8 @@ class NewGame:
                                             (int(self.width / 5), int(self.height / 5 * 2)))
         self.usaim_bounds = [
             (self.width / 5, self.height / 5 * 2),
-            (self.width / 5 + self.usaim.get_width(), self.height / 5 * 2 + self.usaim.get_height())
+            (self.width / 5 + self.usaim.get_width(),
+             self.height / 5 * 2 + self.usaim.get_height())
         ]
 
     def show_usaim(self):
@@ -40,11 +41,11 @@ class NewGame:
     def process_mousedown(self, pos):
         if in_bounds(pos, self.usaim_bounds):
             self.usaim = pygame.transform.scale(pygame.image.load("img/new_game/usaim-pressed.png"),
-                                   (int(self.width / 5), int(self.height / 5 * 2)))
+                                                (int(self.width / 5), int(self.height / 5 * 2)))
 
     def process_mouseup(self, pos):
         if in_bounds(pos, self.usaim_bounds):
             self.usaim = pygame.transform.scale(pygame.image.load("img/new_game/usaim.png"),
-                                   (int(self.width / 5), int(self.height / 5 * 2)))
+                                                (int(self.width / 5), int(self.height / 5 * 2)))
             Data.create_new_person("U")
             self.on = False
