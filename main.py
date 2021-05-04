@@ -8,6 +8,7 @@ pygame.display.set_caption("Run Away from Fat")
 SCREEN_SIZE = (1280, 720)
 SCREEN = pygame.display.set_mode(SCREEN_SIZE, 0, 32)
 
+
 menu = Menu(SCREEN)
 while True:
     for event in pygame.event.get():
