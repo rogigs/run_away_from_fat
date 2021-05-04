@@ -13,7 +13,7 @@ class NewGame:
         self.bg = bg
         self.on = True
         self.usaim, self.radcliffe, self.backbutton = None, None, None
-        
+
         self.reset_imgs()
         self.usaim_bounds = [
             (self.width // 2 - self.usaim.get_width() - 32, self.height // 2 - 32),
