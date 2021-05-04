@@ -3,8 +3,6 @@ from pygame.locals import *
 from sys import exit
 from model.menu import Menu
 
-from character import Character
-
 pygame.init()
 pygame.display.set_caption("Run Away from Fat")
 SCREEN_SIZE = (1280, 720)
@@ -23,9 +21,5 @@ while True:
             menu.detect_drop(pygame.mouse.get_pos())
 
     menu.show()
-
-    # ESSE TRECHO DE CÓDIGO DEVE IR PARA A INTERFACE
-    # character = Character('Usain', SCREEN)
-    # character.draw(50, 100)
 
     pygame.display.update()

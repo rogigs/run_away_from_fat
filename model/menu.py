@@ -2,6 +2,7 @@ import pygame
 from utils.data_manipulation import Data
 from model.new_game import NewGame
 from config import MENU_IMAGES_PATH, IMAGES_PATH
+from model.control_character import Control_character
 from model.controller import Controller
 
 
@@ -22,6 +23,8 @@ class Menu:
 
     def continue_g(self, x, y):
         """Shows 'continuar' button"""
+        c = Control_character()
+        c.get_character('U')
         self.screen.blit(self.continue_img, (x, y))
 
     def new_g(self, x, y):

@@ -37,9 +37,22 @@ class Data:
             c = conn.cursor()
             if c.execute("SELECT * FROM user").fetchone():
                 c.execute("DELETE FROM user where days>=0")
-            c.execute("INSERT INTO user values (?, ?, ?, ?, ?, ?)", [who, 0, 0, 0, 0, 0])
+            c.execute("INSERT INTO user values (?, ?, ?, ?, ?, ?)",
+                      [who, 0, 0, 0, 0, 0])
             conn.commit()
             conn.close()
             return True
+        except Exception as ex:
+            print(ex)
+
+    def get_character(person):
+        try:
+            conn = sqlite3.connect("database.db")
+            c = conn.cursor()
+            c.execute("SELECT * FROM user WHERE person=?", (person))
+            rows = c.fetchall()
+            conn.commit()
+            conn.close()
+            return rows
         except Exception as ex:
             print(ex)
