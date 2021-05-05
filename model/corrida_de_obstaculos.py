@@ -6,11 +6,11 @@ from utils.position import in_bounds
 
 
 class CorridaDeObstaculos(PauseMenu):
-    def __init__(self, screen, character, resistencia):
+    def __init__(self, screen, character, agilidade):
 
         super().__init__(screen)
         self.character = character
-        self.resistencia = resistencia
+        self.agilidade = agilidade
 
     def detect_mousedown(self, pos):
         if in_bounds(pos, self.pause_bounds):
@@ -29,14 +29,14 @@ class CorridaDeObstaculos(PauseMenu):
         dificuldade = [1000, 2000, 2500]
 
         for i in range(0, 10):
-            if dificuldade_lista[i] == self.resistencia:
+            if dificuldade_lista[i] == self.agilidade:
                 for x in range(0, 3):
                     dificuldade[x] = dificuldade[x] + (i * 100)
 
-        # ajusta a velocidade de deslocamento dos obstaculos de acordo com a self.resistencia do jogador
-        if self.resistencia <= 50:
+        # ajusta a velocidade de deslocamento dos obstaculos de acordo com a self.agilidade do jogador
+        if self.agilidade <= 50:
             velocidade_obstaculo = 15
-        elif self.resistencia <= 80:
+        elif self.agilidade <= 80:
             velocidade_obstaculo = 20
         else:
             velocidade_obstaculo = 25
@@ -76,7 +76,7 @@ class CorridaDeObstaculos(PauseMenu):
         def draw_hearts(hearts_list):
             heart_x = 900
             for heart in hearts_list:
-                heart_x += 70
+                heart_x += 90
                 screen.blit(heart, (heart_x, 30))
 
         # função que cria o obstaculo
@@ -305,7 +305,6 @@ class CorridaDeObstaculos(PauseMenu):
 
             # mostra botao de pause
             self.show_pause_button()
-
             pygame.display.update()
             clock.tick(60)
         end_game()
