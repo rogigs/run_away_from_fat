@@ -30,4 +30,5 @@ class Control_character():
             self.resistance = row[5]
 
         except Exception as e:
-            print('Erro ao buscar personagem {}'.format(e))
+            pass
+            # print('Erro ao buscar personagem {}'.format(e))

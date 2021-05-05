@@ -1,13 +1,14 @@
 import pygame
 from pygame.locals import *
 from model.pause_menu import PauseMenu
+from model.corrida_de_obstaculos import CorridaDeObstaculos
 
 
 class Controller:
     def __init__(self, screen):
         self.screen = screen
         self.width, self.height = pygame.display.get_surface().get_size()
-        self.pause_menu = PauseMenu(screen)
+        self.corrida_de_obstaculos = CorridaDeObstaculos(screen, "usaim", 10)
         self.on = True
         self.pause = True
 
@@ -23,5 +24,6 @@ class Controller:
                 elif event.type == MOUSEBUTTONUP:
                     print("mouseup")
 
-            if self.pause:
-                self.on = self.pause_menu.show_pause()
+            corrida_result = self.corrida_de_obstaculos.corrida_obstaculo()
+            if not corrida_result:
+                self.on = False
