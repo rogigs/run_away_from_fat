@@ -45,12 +45,13 @@ class Data:
         except Exception as ex:
             print(ex)
 
-    def get_character(person):
+    @staticmethod
+    def get_character():
         try:
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
-            c.execute("SELECT * FROM user WHERE person=?", (person))
-            rows = c.fetchall()
+            c.execute("SELECT * FROM user")
+            rows = c.fetchone()
             conn.commit()
             conn.close()
             return rows

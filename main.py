@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 from sys import exit
 from model.menu import Menu
-from model.corrida_de_obstaculos import corrida_obstaculo
 
 pygame.init()
 pygame.display.set_caption("Run Away from Fat")
@@ -22,5 +21,4 @@ while True:
             menu.detect_drop(pygame.mouse.get_pos())
 
     menu.show()
-
     pygame.display.update()
