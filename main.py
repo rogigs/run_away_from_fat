@@ -22,5 +22,5 @@ while True:
             menu.detect_drop(pygame.mouse.get_pos())
 
     menu.show()
-    
+
     pygame.display.update()

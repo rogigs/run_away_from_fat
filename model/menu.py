@@ -59,10 +59,10 @@ class Menu:
 
     def drop_new(self):
         """Changes 'Novo jogo' image to its unpressed version. And go to person creation."""
-        self.new_game.show()
+        result = self.new_game.show()
         self.has_save = Data.has_save()
 
-        if self.has_save:
+        if result == "created":
             self.controller.show()
 
     def press_leave(self):
