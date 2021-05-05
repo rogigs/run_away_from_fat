@@ -54,7 +54,11 @@ class NewGame:
                 if event.type == MOUSEBUTTONDOWN:
                     self.process_mousedown(pygame.mouse.get_pos())
                 elif event.type == MOUSEBUTTONUP:
-                    self.process_mouseup(pygame.mouse.get_pos())
+                    result = self.process_mouseup(pygame.mouse.get_pos())
+                    if result == "created":
+                        return "created"
+                    elif result == "back":
+                        return "back"
             self.screen.blit(self.bg, (0, 0))
             self.show_usaim()
             self.show_radcliffe()
@@ -77,12 +81,12 @@ class NewGame:
         self.reset_imgs()
         if in_bounds(pos, self.usaim_bounds):
             Data.create_new_person("U")
-            self.on = False
+            return "created"
         if in_bounds(pos, self.radcliffe_bounds):
             Data.create_new_person("R")
-            self.on = False
+            return "created"
         if in_bounds(pos, self.backbutton_bounds):
-            self.on = False
+            return "back"
 
     def reset_imgs(self):
         self.usaim = pygame.transform.scale(pygame.image.load(NEW_GAME_IMAGES_PATH + "usaim.png"),
