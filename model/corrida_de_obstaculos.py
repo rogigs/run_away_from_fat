@@ -3,21 +3,21 @@ from pygame.locals import *
 from config import IMAGES_PATH, SOUNDS_PATH
 
 
-def corrida_obstaculo(character,resistencia):
+def corrida_obstaculo(character,agilidade):
     
     #Dificuldade
     dificuldade_lista=[100,90,80,70,60,50,40,30,20,10]
     dificuldade=[1000,2000,2500]
 
     for i in range (0,10):
-        if dificuldade_lista[i]==resistencia:
+        if dificuldade_lista[i]==agilidade:
             for x in range (0,3):
                 dificuldade[x]=dificuldade[x] + (i*100)
 
-   #ajusta a velocidade de deslocamento dos obstaculos de acordo com a resistencia do jogador 
-    if resistencia <=50:
+   #ajusta a velocidade de deslocamento dos obstaculos de acordo com a agilidade do jogador 
+    if agilidade <=50:
         velocidade_obstaculo=15
-    elif resistencia <=80:
+    elif agilidade <=80:
         velocidade_obstaculo=20
     else:
         velocidade_obstaculo=25
@@ -59,7 +59,7 @@ def corrida_obstaculo(character,resistencia):
     def draw_hearts(hearts_list):
         heart_x=900
         for heart in hearts_list:
-            heart_x+=70
+            heart_x+=90
             screen.blit(heart,(heart_x,30))
 
     #função que cria o obstaculo
@@ -98,7 +98,7 @@ def corrida_obstaculo(character,resistencia):
 
     pygame.init()
     #seta a tela para o tamanho 1200X700
-    screen = pygame.display.set_mode((1200,700))
+    screen = pygame.display.set_mode((1280,720))
     clock = pygame.time.Clock()
 
     #variaveis do jogo
