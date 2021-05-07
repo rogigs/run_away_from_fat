@@ -1,3 +1,5 @@
+import time
+
 import pygame, sys, random
 from pygame.locals import *
 from config import IMAGES_PATH, SOUNDS_PATH
@@ -6,11 +8,10 @@ from utils.position import in_bounds
 
 
 class CorridaDeObstaculos(PauseMenu):
-    def __init__(self, screen, character, resistencia):
+    def __init__(self, screen, agilidade):
 
         super().__init__(screen)
-        self.character = character
-        self.resistencia = resistencia
+        self.agilidade = agilidade
 
     def detect_mousedown(self, pos):
         if in_bounds(pos, self.pause_bounds):
@@ -22,21 +23,21 @@ class CorridaDeObstaculos(PauseMenu):
         self.reset_imgs()
         return True
 
-    def corrida_obstaculo(self):
+    def corrida_obstaculo(self, character):
 
         # Dificuldade
         dificuldade_lista = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10]
         dificuldade = [1000, 2000, 2500]
 
         for i in range(0, 10):
-            if dificuldade_lista[i] == self.resistencia:
+            if dificuldade_lista[i] == self.agilidade:
                 for x in range(0, 3):
                     dificuldade[x] = dificuldade[x] + (i * 100)
 
-        # ajusta a velocidade de deslocamento dos obstaculos de acordo com a self.resistencia do jogador
-        if self.resistencia <= 50:
+        # ajusta a velocidade de deslocamento dos obstaculos de acordo com a self.agilidade do jogador
+        if self.agilidade <= 50:
             velocidade_obstaculo = 15
-        elif self.resistencia <= 80:
+        elif self.agilidade <= 80:
             velocidade_obstaculo = 20
         else:
             velocidade_obstaculo = 25
@@ -45,9 +46,13 @@ class CorridaDeObstaculos(PauseMenu):
         def end_game():
             if loser == True:
                 lose_effect.play()
+                time.sleep(1.4)
+                pygame.mixer.quit()
                 return 0
             if loser == False:
                 win_effect.play()
+                time.sleep(1.4)
+                pygame.mixer.quit()
                 return 10
 
         # mostra o tutorial do nivel
@@ -76,7 +81,7 @@ class CorridaDeObstaculos(PauseMenu):
         def draw_hearts(hearts_list):
             heart_x = 900
             for heart in hearts_list:
-                heart_x += 70
+                heart_x += 90
                 screen.blit(heart, (heart_x, 30))
 
         # função que cria o obstaculo
@@ -151,13 +156,13 @@ class CorridaDeObstaculos(PauseMenu):
         win_effect = pygame.mixer.Sound(SOUNDS_PATH + 'youWin.mp3')
 
         # sprite corrida
-        if self.character == "usaim":
+        if character == "U":
             run_frame2 = pygame.image.load(IMAGES_PATH + 'corridaObsImgs/men2.png').convert_alpha()
             run_frame1 = pygame.image.load(IMAGES_PATH + 'corridaObsImgs/men1.png').convert_alpha()
             run_frame3 = pygame.image.load(IMAGES_PATH + 'corridaObsImgs/men3.png').convert_alpha()
             run_frame4 = pygame.image.load(IMAGES_PATH + 'corridaObsImgs/men4.png').convert_alpha()
             run_frame5 = pygame.image.load(IMAGES_PATH + 'corridaObsImgs/men5.png').convert_alpha()
-        if self.character == "radcliffe":
+        if character == "R":
             run_frame2 = pygame.image.load(IMAGES_PATH + 'corridaObsImgs/girl2.png').convert_alpha()
             run_frame1 = pygame.image.load(IMAGES_PATH + 'corridaObsImgs/girl1.png').convert_alpha()
             run_frame3 = pygame.image.load(IMAGES_PATH + 'corridaObsImgs/girl3.png').convert_alpha()
@@ -241,6 +246,7 @@ class CorridaDeObstaculos(PauseMenu):
                 elif event.type == MOUSEBUTTONUP:
                     result = self.detect_mouseup(pygame.mouse.get_pos())
                     if not result:
+                        pygame.mixer.quit()
                         return False
 
                 # capturando evendo de relogio a cada 1 segundo e atualizando a variável contadora
@@ -297,7 +303,7 @@ class CorridaDeObstaculos(PauseMenu):
                 # redesenhas os obstaculos colocando o obstaculo caido no lugar
                 redraw_obstaculo(obstaculo_caido_list)
                 timer1 = font.render('Tempo ' + str(temporizador), True, (0, 0, 0))
-                screen.blit(timer1, (50, 50))
+                screen.blit(timer1, (90, 32))
 
                 # finalizando o jogo
                 if temporizador == 0:
@@ -305,7 +311,6 @@ class CorridaDeObstaculos(PauseMenu):
 
             # mostra botao de pause
             self.show_pause_button()
-
             pygame.display.update()
             clock.tick(60)
         end_game()

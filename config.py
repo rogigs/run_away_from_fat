@@ -1,4 +1,3 @@
-
 sep = "/"
 MENU_IMAGES_PATH = "assets" + sep + "img" + sep + "menu" + sep
 NEW_GAME_IMAGES_PATH = "assets" + sep + "img" + sep + "new_game" + sep

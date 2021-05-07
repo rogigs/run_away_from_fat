@@ -84,7 +84,6 @@ class PauseMenu:
             pygame.display.update()
 
     def process_mousedown(self, pos):
-        print("hi")
         if self.pause:
             if in_bounds(pos, self.continue_bounds):
                 self.img_continue = self.scale_it(
