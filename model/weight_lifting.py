@@ -3,7 +3,7 @@ from pygame.locals import *
 from model.pause_menu import PauseMenu
 from config import IMAGES_PATH, SOUNDS_PATH
 
-class Weightlifting(PauseMenu):
+class Weight_lifting(PauseMenu):
     def __init__(self, screen, character, force):
         super().__init__(screen)
         self.character = character
