@@ -57,3 +57,15 @@ class Data:
             return rows
         except Exception as ex:
             print(ex)
+
+    @staticmethod
+    def increase_status(num, kind):
+        try:
+            conn = sqlite3.connect("database.db")
+            c = conn.cursor()
+            c.execute(f"UPDATE user set {kind} = {kind} + {num} WHERE days >= 0")
+            conn.commit()
+            conn.close()
+            return
+        except Exception as ex:
+            print(ex)

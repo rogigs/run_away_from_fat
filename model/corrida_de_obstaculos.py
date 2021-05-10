@@ -46,12 +46,10 @@ class CorridaDeObstaculos(PauseMenu):
         def end_game():
             if loser == True:
                 lose_effect.play()
-                time.sleep(1.4)
                 pygame.mixer.quit()
                 return 0
             if loser == False:
                 win_effect.play()
-                time.sleep(1.4)
                 pygame.mixer.quit()
                 return 10
 
@@ -313,4 +311,4 @@ class CorridaDeObstaculos(PauseMenu):
             self.show_pause_button()
             pygame.display.update()
             clock.tick(60)
-        end_game()
+        return end_game()
