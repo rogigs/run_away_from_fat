@@ -11,7 +11,6 @@ class CorridaDeObstaculos(PauseMenu):
     def __init__(self, screen, agilidade):
 
         super().__init__(screen)
-        self.agilidade = agilidade
 
     def detect_mousedown(self, pos):
         if in_bounds(pos, self.pause_bounds):
@@ -23,21 +22,21 @@ class CorridaDeObstaculos(PauseMenu):
         self.reset_imgs()
         return True
 
-    def corrida_obstaculo(self, character):
+    def corrida_obstaculo(self, character, resistance):
 
         # Dificuldade
         dificuldade_lista = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10]
         dificuldade = [1000, 2000, 2500]
 
         for i in range(0, 10):
-            if dificuldade_lista[i] == self.agilidade:
+            if dificuldade_lista[i] == resistance:
                 for x in range(0, 3):
                     dificuldade[x] = dificuldade[x] + (i * 100)
 
-        # ajusta a velocidade de deslocamento dos obstaculos de acordo com a self.agilidade do jogador
-        if self.agilidade <= 50:
+        # ajusta a velocidade de deslocamento dos obstaculos de acordo com a resistance do jogador
+        if resistance <= 50:
             velocidade_obstaculo = 15
-        elif self.agilidade <= 80:
+        elif resistance <= 80:
             velocidade_obstaculo = 20
         else:
             velocidade_obstaculo = 25

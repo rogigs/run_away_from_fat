@@ -7,7 +7,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS user (
     days integer,
     coins integer,
     speed integer,
-    stamina integer,
+    strength integer,
     resistance integer,
     PRIMARY KEY (person)
 )""")

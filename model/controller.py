@@ -22,16 +22,27 @@ class Controller:
             self.on = False
 
     def show_win_screen(self, result, kind):
+        translation = {"resistance": "resistência", "speed": "velocidade", "strength": "força"}
+        back = pygame.Surface((self.width, self.height))
+        back.set_alpha(215)
+        back.fill((0, 0, 0))
+        self.screen.blit(back, (0, 0))
+        # title
+        self.write(text="Você venceu!", size=72, color=(0, 255, 0), where=(self.width / 2, 100))
+        # description
+        self.write(text=f"+{result} pontos de {translation[kind]}.", size=32, where=(self.width / 2, self.height / 2))
+        # instruction
+        self.write(text="Pressione qualquer tecla para continuar.", size=32,
+                   where=(self.width / 2, self.height / 2+50))
+        pygame.display.update()
         while True:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
-                if event.type == MOUSEBUTTONDOWN:
-                    print("mousedown win")
                 elif event.type == MOUSEBUTTONUP:
-                    print("mouseup win")
-            # print(result, kind)
+                    self.on = False
+                    return
 
     def write(self, text="", size=32, color=(255, 255, 255), where=(0, 0)):
         font = pygame.font.SysFont("FreePixel", size)
@@ -72,6 +83,5 @@ class Controller:
                     print("mousedown")
                 elif event.type == MOUSEBUTTONUP:
                     print("mouseup")
-            # corrida_result = self.corrida_de_obstaculos.corrida_obstaculo(Data.get_character()[0])
-            corrida_result = 0
+            corrida_result = self.corrida_de_obstaculos.corrida_obstaculo(Data.get_character()[0])
             self.minigame_end(corrida_result, "resistance")
