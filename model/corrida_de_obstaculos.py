@@ -8,7 +8,7 @@ from utils.position import in_bounds
 
 
 class CorridaDeObstaculos(PauseMenu):
-    def __init__(self, screen, agilidade):
+    def __init__(self, screen):
 
         super().__init__(screen)
 

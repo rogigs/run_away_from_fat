@@ -13,6 +13,7 @@ class Controller:
 
     def minigame_end(self, result, kind):
         if type(result) == int:
+            Data.increase_day()
             if result > 0:
                 Data.increase_status(result, kind)
                 self.show_win_screen(result, kind)
@@ -30,17 +31,23 @@ class Controller:
         # title
         self.write(text="Você venceu!", size=72, color=(0, 255, 0), where=(self.width / 2, 100))
         # description
-        self.write(text=f"+{result} pontos de {translation[kind]}.", size=32, where=(self.width / 2, self.height / 2))
+        if Data.get_status()[kind] <= 90:
+            self.write(text=f"+{result} pontos de {translation[kind]} lhe foram atribuidos.", size=32,
+                       where=(self.width / 2, self.height / 2))
+        else:
+            self.write(text=f"Você alcançou o limite da {translation[kind]} humana.", size=32,
+                       where=(self.width / 2, self.height / 2))
+
         # instruction
         self.write(text="Pressione qualquer tecla para continuar.", size=32,
-                   where=(self.width / 2, self.height / 2+50))
+                   where=(self.width / 2, self.height / 2 + 50))
         pygame.display.update()
         while True:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
-                elif event.type == MOUSEBUTTONUP:
+                elif event.type == KEYUP:
                     self.on = False
                     return
 
@@ -60,7 +67,7 @@ class Controller:
         self.write(text="Nenhum ponto de status lhe foi atribuido.", size=32, where=(self.width / 2, self.height / 2))
         # instruction
         self.write(text="Pressione qualquer tecla para continuar.", size=32,
-                   where=(self.width / 2, self.height / 2+50))
+                   where=(self.width / 2, self.height / 2 + 50))
 
         pygame.display.update()
         while True:
@@ -83,5 +90,6 @@ class Controller:
                     print("mousedown")
                 elif event.type == MOUSEBUTTONUP:
                     print("mouseup")
-            corrida_result = self.corrida_de_obstaculos.corrida_obstaculo(Data.get_character()[0])
-            self.minigame_end(corrida_result, "resistance")
+            corrida_result = self.corrida_de_obstaculos.corrida_obstaculo(Data.get_character()[0],
+                                                                          Data.get_status()["resistance"])
+            self.minigame_end(corrida_result, "speed")

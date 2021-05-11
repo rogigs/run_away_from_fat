@@ -60,12 +60,41 @@ class Data:
 
     @staticmethod
     def increase_status(num, kind):
+        kind_to_index = {"speed": 3, "strength": 4, "resistance": 5}
         try:
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
-            c.execute(f"UPDATE user set {kind} = {kind} + {num} WHERE days >= 0")
+            c.execute(f"SELECT * FROM user")
+            if c.fetchone()[kind_to_index[kind]] <= 90:
+                c.execute(f"UPDATE user set {kind} = {kind} + {num} WHERE days >= 0")
             conn.commit()
             conn.close()
             return
+        except Exception as ex:
+            print(ex)
+
+    @staticmethod
+    def increase_day():
+        try:
+            conn = sqlite3.connect("database.db")
+            c = conn.cursor()
+            c.execute(f"SELECT * FROM user")
+            c.execute(f"UPDATE user set days = days + 1 WHERE days >= 0")
+            conn.commit()
+            conn.close()
+            return
+        except Exception as ex:
+            print(ex)
+
+    @staticmethod
+    def get_status():
+        try:
+            conn = sqlite3.connect("database.db")
+            c = conn.cursor()
+            c.execute(f"SELECT * FROM user")
+            user = c.fetchone()
+            conn.commit()
+            conn.close()
+            return {"speed": user[3], "strength": user[4], "resistance": user[5]}
         except Exception as ex:
             print(ex)
