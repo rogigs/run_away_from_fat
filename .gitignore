@@ -1,5 +1,8 @@
 /venv
+/env
+database.db
 **/__pycache__
 
 /.idea
 /.idea/*
+/.vscode
