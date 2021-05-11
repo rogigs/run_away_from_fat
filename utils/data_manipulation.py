@@ -98,3 +98,16 @@ class Data:
             return {"speed": user[3], "strength": user[4], "resistance": user[5]}
         except Exception as ex:
             print(ex)
+
+    @staticmethod
+    def get_day():
+        try:
+            conn = sqlite3.connect("database.db")
+            c = conn.cursor()
+            c.execute(f"SELECT * FROM user")
+            user = c.fetchone()
+            conn.commit()
+            conn.close()
+            return user[1]
+        except Exception as ex:
+            print(ex)
