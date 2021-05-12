@@ -1,9 +1,9 @@
 import pygame, sys, random
 from pygame.locals import *
-from model.pause_menu import PauseMenu
+from model.hud import HUD
 from config import IMAGES_PATH, SOUNDS_PATH
 
-class Weight_lifting(PauseMenu):
+class Weight_lifting(HUD):
     def __init__(self, screen, character, force):
         super().__init__(screen)
         self.character = character

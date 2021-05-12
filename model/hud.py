@@ -1,10 +1,11 @@
 import pygame
 from pygame.locals import *
 from config import PAUSE_PATH, MENU_IMAGES_PATH
+from utils.data_manipulation import Data
 from utils.position import in_bounds
 
 
-class PauseMenu:
+class HUD:
     def __init__(self, screen):
         self.screen = screen
         self.width, self.height = pygame.display.get_surface().get_size()
@@ -113,3 +114,27 @@ class PauseMenu:
         self.img_menu = self.scale_it(pygame.image.load(PAUSE_PATH + "menu.png").convert_alpha())
         self.img_leave = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair.png").convert_alpha())
         self.img_pause = pygame.transform.scale(pygame.image.load(PAUSE_PATH + "pause.png").convert_alpha(), (64, 64))
+
+    def show_status(self):
+        width = 300
+        font = pygame.font.SysFont("FreePixel", 22)
+        back = pygame.Surface((312, 124))
+        back.set_alpha(128)
+        back.fill((128, 128, 128))
+        status = Data.get_status()
+        self.screen.blit(back, (10, 594))
+        # speed
+        pygame.draw.rect(self.screen, (0, 255, 0), (16, 600, width / 100 * status["speed"], 30))
+        pygame.draw.rect(self.screen, (0, 0, 0), (16, 600, width, 30), width=3)
+        text = font.render("VELOCIDADE", True, (0, 0, 0))
+        self.screen.blit(text, (16+300/2-text.get_width()/2, 605))
+        # strength
+        pygame.draw.rect(self.screen, (255, 0, 0), (16, 640, width / 100 * status["strength"], 30))
+        pygame.draw.rect(self.screen, (0, 0, 0), (16, 640, width, 30), width=3)
+        text = font.render("FORÇA", True, (0, 0, 0))
+        self.screen.blit(text, (16+300/2-text.get_width()/2, 645))
+        # resistance
+        pygame.draw.rect(self.screen, (0, 0, 255), (16, 680, width / 100 * status["resistance"], 30))
+        pygame.draw.rect(self.screen, (0, 0, 0), (16, 680, width, 30), width=3)
+        text = font.render("RESISTÊNCIA", True, (0, 0, 0))
+        self.screen.blit(text, (16+300/2-text.get_width()/2, 685))

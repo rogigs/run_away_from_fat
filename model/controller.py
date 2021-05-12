@@ -75,7 +75,7 @@ class Controller:
                     pass
                 elif event.type == MOUSEBUTTONUP:
                     pass
-            # corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
-            #                                                                     Data.get_status()["resistance"])
-            corrida_result = 0
+            corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
+                                                                                Data.get_status()["resistance"])
+
             self.minigame_end(corrida_result, "speed")

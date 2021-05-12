@@ -3,11 +3,11 @@ import time
 import pygame, sys, random
 from pygame.locals import *
 from config import IMAGES_PATH, SOUNDS_PATH
-from model.pause_menu import PauseMenu
+from model.hud import HUD
 from utils.position import in_bounds
 
 
-class CorridaDeObstaculos(PauseMenu):
+class CorridaDeObstaculos(HUD):
     def __init__(self, screen):
 
         super().__init__(screen)
@@ -308,6 +308,7 @@ class CorridaDeObstaculos(PauseMenu):
 
             # mostra botao de pause
             self.show_pause_button()
+            self.show_status()
             pygame.display.update()
             clock.tick(60)
         return end_game()
