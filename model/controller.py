@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from model.corrida_de_obstaculos import CorridaDeObstaculos
+from model.weight_lifting import Weight_lifting
 from utils.data_manipulation import Data
 
 
@@ -9,6 +10,8 @@ class Controller:
         self.screen = screen
         self.width, self.height = pygame.display.get_surface().get_size()
         self.on = True
+
+        self.minigame =  Weight_lifting(self.screen, Data.get_character()[0])
 
     def minigame_end(self, result, kind):
         if type(result) == int:
@@ -75,7 +78,10 @@ class Controller:
                     pass
                 elif event.type == MOUSEBUTTONUP:
                     pass
-            corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
-                                                                                Data.get_status()["resistance"])
+            
+            # corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
+            #                                                                     Data.get_status()["resistance"])
 
-            self.minigame_end(corrida_result, "speed")
+            weight_lifting = self.minigame.weightlifting(Data.get_status()["strength"])
+
+            self.minigame_end(weight_lifting, "strength")
