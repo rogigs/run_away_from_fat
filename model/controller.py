@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from model.corrida_de_obstaculos import CorridaDeObstaculos
+from model.biking import  Biking
 from utils.data_manipulation import Data
 
 
@@ -76,6 +77,9 @@ class Controller:
                 elif event.type == MOUSEBUTTONUP:
                     pass
             corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
-                                                                                Data.get_status()["resistance"])
-
+                                                                                Data.get_status()["speed"])
             self.minigame_end(corrida_result, "speed")
+            
+            biking_result=Biking(self.screen).biking_minigame(Data.get_character()[0],
+                                                    Data.get_status()["resistance"])
+            self.minigame_end(biking_result, "resistance")
