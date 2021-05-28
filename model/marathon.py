@@ -7,10 +7,18 @@ class Marathon(HUD):
     def __init__(self, screen):
         super().__init__(screen) 
 
+        self.show_tutor = True
+
         self._clock = pygame.time.Clock()
+        self._CLOCKTICK = pygame.USEREVENT+3
+        self._temporizador = 60
+        self._initial_temp = self._temporizador
+
         self._size_screen = self.screen.get_rect()
         
-        self._velocity = 10
+        self._number_velocity = 20
+        self._velocity = self._number_velocity
+
         self._images = {
             "character": [True, "marathon/usaim_run_1.png", "marathon/usaim_run_2.png"],
             "runner1": [True, "marathon/usaim_run_1.png", "marathon/usaim_run_2.png"],
@@ -18,6 +26,10 @@ class Marathon(HUD):
         }
 
         self._pos_y_obstacles = 100
+        self._pos_y_boost = 100
+        self._pos_y_obstacles_aux = [0 , 0]
+
+        self._pos_y_obstacles_aux = self._pos_y_obstacles
         self._pos_y_background = 0
         self._pos_x_character =  self._size_screen[2]/2
         
@@ -26,59 +38,157 @@ class Marathon(HUD):
         self._random_number_adversary = 1
         self._random_pos_adversary = random.randint(0, 2)
         self._random_pos_adversary_aux = self._random_pos_adversary
+        self._if_random_boost = random.randint(0, 5)
+        self._random_pos_boost = random.randint(0, 2)
         self._pos_x_adversary = [self._pos_x_character - 270, self._pos_x_character - 70, self._pos_x_character + 130]
-        self._aux_pos_y_adversary = 0
+        self._pos_y_obstacles_aux = [0 , 0]
 
-    def _control_pos_y_obstacles(self):
+        self._boost = False
+        self._aux_boost = 0
+
+        self.end_game = 0
+
+    def _control_game_state(self):
         if self._pos_y_obstacles > self._size_screen[3]:
             self._random_number_adversary = random.randint(1, 2)
             self._random_pos_adversary = random.randint(0, 2)
             self._random_pos_adversary_aux = random.randint(0, 2)
-            while self._random_pos_adversary == self._random_pos_adversary_aux:
-                self._random_pos_adversary_aux = random.randint(0, 2)
-            
-            self._aux_pos_y_adversary = random.randint(0, 5)
-            if self._aux_pos_y_adversary == 5:
-                self._aux_pos_y_adversary -= 200
+            self._if_random_boost = random.randint(0, 3)
+            self._random_pos_boost = random.randint(0, 2)
+
+            if self._random_number_adversary == 1:
+                self._random_pos_adversary_aux = -1
             else:
-                self._aux_pos_y_adversary = 0
+                while self._random_pos_adversary == self._random_pos_adversary_aux:
+                    self._random_pos_adversary_aux = random.randint(0, 2)
             
+            while self._random_pos_adversary == self._random_pos_boost or self._random_pos_adversary_aux == self._random_pos_boost:
+                    self._random_pos_boost = random.randint(0, 2)
+
             self._pos_y_obstacles = 0
+            self._pos_y_boost = 0
+            self._pos_y_obstacles_aux = [0 , 0]
+
+
+            if self._boost:  
+                self._aux_boost += 1
+                if self._aux_boost > 3:
+                    self._aux_boost = 0
+                    self._boost = False
+                    self._velocity = self._number_velocity
+                else:
+                    self._velocity = self._number_velocity * 2 
+
+            
+    def _draw_boost(self):
+        if self._if_random_boost == 3:
+            flash = pygame.image.load(IMAGES_PATH +"marathon/flash.png").convert_alpha()
+            flash = pygame.transform.smoothscale( flash, (100, 100) )
+            
+            if self._random_number_adversary == 1:
+                self._random_pos_adversary_aux = -1
+            
+            self.screen.blit(flash, [self._pos_x_adversary[self._random_pos_boost] , self._pos_y_boost])
 
     def _draw_adversary(self):
         if self._random_number_adversary == 1:
-            self.screen.blit(self._effect_runner("runner1"), [self._pos_x_adversary[self._random_pos_adversary] , self._pos_y_obstacles])
+            self.screen.blit( self._effect_runner("runner1"), [self._pos_x_adversary[self._random_pos_adversary] , self._pos_y_obstacles])
         else:
-            self.screen.blit(self._effect_runner("runner1"), [self._pos_x_adversary[self._random_pos_adversary], self._pos_y_obstacles])
-            self.screen.blit(self._effect_runner("runner2"), [self._pos_x_adversary[self._random_pos_adversary_aux] , self._pos_y_obstacles + self._aux_pos_y_adversary])
+            self.screen.blit(self._effect_runner("runner1"), [self._pos_x_adversary[self._random_pos_adversary], self._pos_y_obstacles + self._pos_y_obstacles_aux[0]])
+            self.screen.blit(self._effect_runner("runner2"), [self._pos_x_adversary[self._random_pos_adversary_aux] , self._pos_y_obstacles + self._pos_y_obstacles_aux[1]])
 
 
     def _obstacles(self):
-        self._control_pos_y_obstacles()
+        self._control_game_state()
+        self._draw_boost()
         self._draw_adversary()
-        
+   
     def _control_events(self): 
-        if pygame.key.get_pressed()[pygame.K_LEFT]:
-                self._pos_x_character -= 20
-        if pygame.key.get_pressed()[pygame.K_RIGHT]:
-                self._pos_x_character += 20
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT:
-                    self._pos_x_character -= 20
-                if event.key == pygame.K_RIGHT:
-                    self._pos_x_character += 20
+        if not self.show_tutor:
+            if pygame.key.get_pressed()[pygame.K_LEFT]:
+                    self._pos_x_character -= self._velocity / 2
+            if pygame.key.get_pressed()[pygame.K_RIGHT]:
+                    self._pos_x_character += self._velocity / 2
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
+                    if event.key == pygame.K_LEFT:
+                        self._pos_x_character -= self._velocity / 2
+                    if event.key == pygame.K_RIGHT:
+                        self._pos_x_character += self._velocity / 2
+                if event.type == self._CLOCKTICK:
+                    self._temporizador -= 1
+        else:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_s:
+                            self.show_tutor = False
 
         if self._pos_x_character > 900:
             self._pos_x_character = 900
         if self._pos_x_character < self._size_screen[2]/2 - 250:
             self._pos_x_character = self._size_screen[2]/2 - 250
 
-    def _colision(self):
-        if (self._pos_x_character == self._pos_y_obstacles) and self._pos_x_character == self._size_screen[3] - 100:
-            print("BATEU")
+    def _pista(self):
+        #left
+        if self._pos_x_character > 320 and self._pos_x_character < 520 and self._pos_y_obstacles + 110 > self._size_screen[3] - 100:
+            return [320, 520]
+        #middle
+        elif self._pos_x_character > 540 and self._pos_x_character < 740  and self._pos_y_obstacles + 110 > self._size_screen[3] - 100:
+            return [540, 740]
+        #right
+        elif self._pos_x_character > 760 and self._pos_x_character < 960 and self._pos_y_obstacles + 110 > self._size_screen[3] - 100:
+            return [760, 960]
         else:
-            self._pos_y_obstacles += self._velocity        
+            return [0,0]
+            
+    def _who_colision(self, who):
+        if self._random_pos_adversary == who:
+            self._pos_y_obstacles_aux[1] += self._velocity
+        else:
+            self._pos_y_obstacles_aux[0] += self._velocity
+    
+    def _colision_boost(self, left, right):
+        if left == 320 and right == 520 and self._random_pos_boost == 0:
+            self._pos_y_boost = -900
+            self._boost = True
+        elif left == 540 and right == 740 and self._random_pos_boost == 1:
+            self._pos_y_boost = -900
+            self._boost = True
+        #right
+        elif left == 760 and right == 960 and self._random_pos_boost == 2:
+            self._pos_y_boost = -900
+            self._boost = True
+        else:
+            self._boost = False
+            
+    def _colision(self):
+        adversary_left = (self._random_pos_adversary == 0 or self._random_pos_adversary_aux == 0 ) 
+        adversary_middle = (self._random_pos_adversary == 1 or self._random_pos_adversary_aux == 1 ) 
+        adversary_right = (self._random_pos_adversary == 2 or self._random_pos_adversary_aux == 2 ) 
+
+        [left, right] = self._pista()
+
+        self._colision_boost(left, right)
+
+        if self._random_number_adversary == 1:
+            self._random_pos_adversary_aux = -1
+        #left
+        if left == 320 and right == 520 and adversary_left:
+            self._velocity = self._number_velocity / 3
+            self._who_colision(0)
+        #middle
+        elif left == 540 and right == 740 and adversary_middle:
+            self._velocity = self._number_velocity / 3
+            self._who_colision(1)
+        #right
+        elif left == 760 and right == 960 and adversary_right:
+            self._velocity = self._number_velocity / 3
+            self._who_colision(2)
+        else:
+            self._velocity = self._number_velocity
+            self._pos_y_obstacles += self._velocity 
+            self._pos_y_boost += self._velocity        
+
 
     def _effect_runner(self, who):
         if self._images[who][0]:
@@ -90,15 +200,22 @@ class Marathon(HUD):
             sprite = pygame.transform.smoothscale( sprite, (120, 100) )
             self._images[who][0] = True
         return sprite
+    
+    def _show_tutor(self):
+        if self.show_tutor:
+            tutorial = pygame.image.load(IMAGES_PATH + "weightlifiting/tutorial.png").convert_alpha()
+            tutorial_print = tutorial.get_rect(center=(1280/2 - 25, 720/2 + 25))
+            pygame.draw.rect(self.screen, [0, 0, 0], [284, 264, 633, 201])
+            self.screen.blit(tutorial, (tutorial_print))
 
-    def marathon(self):   
+    def marathon(self): 
+        #criando objeto Clock
+        font = pygame.font.SysFont('sans', 40)
+        pygame.time.set_timer(self._CLOCKTICK, 1000)   
         while True:
             self._pos_y_background -= self._velocity
-
-            self._clock.tick(10)
+            self._clock.tick(12)
                    
-           
-            
             track = pygame.image.load(IMAGES_PATH + "marathon/track.png").convert_alpha()
             outside_track = pygame.image.load(IMAGES_PATH + "marathon/outside.png").convert_alpha()
             
@@ -110,17 +227,29 @@ class Marathon(HUD):
                 self._pos_y_background = 0
 
 
-            self.screen.blit(self._effect_runner("character"), [self._pos_x_character - 70 , self._size_screen[3] - 100 ])
-
-            self._obstacles()
-
-            self._colision()
+            character = self._effect_runner("character")
+            self.screen.blit(character, [self._pos_x_character - 70 , self._size_screen[3] - 100 ])
 
             self._control_events()
-     
+            
+            if self.show_tutor:
+                self._show_tutor()
+            else:
+                self._obstacles()
+
+                self._colision()
+
+                timer1 = font.render('Tempo ' + str(self._temporizador), True, (0, 0, 0))
+                self.screen.blit(timer1, (50, 50))        
+
             pygame.display.update()
             pygame.display.flip()
 
-
-        return 0
-    
+            """
+                Return result, Time, level
+            """
+            if self._temporizador == 0 and self.end_game < 5:
+                return 0
+            if self.end_game > 5:     
+                return 0
+                

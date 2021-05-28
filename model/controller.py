@@ -3,6 +3,7 @@ from pygame.locals import *
 from model.corrida_de_obstaculos import CorridaDeObstaculos
 from model.weight_lifting import Weight_lifting
 from model.marathon import Marathon
+from model.biking import  Biking
 from utils.data_manipulation import Data
 
 

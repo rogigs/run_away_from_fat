@@ -145,12 +145,12 @@ class CorridaDeObstaculos(HUD):
         bg_pista_x = 0
 
         # efeitos sonoros / musica
-        hit_sound = pygame.mixer.Sound(SOUNDS_PATH + 'hitSound.mp3')
-        jump_sound = pygame.mixer.Sound(SOUNDS_PATH + 'jump.mp3')
-        pygame.mixer.music.load(SOUNDS_PATH + 'themeSong.mp3')
+        hit_sound = pygame.mixer.Sound(SOUNDS_PATH + 'corridaObsSounds/hitSound.mp3')
+        jump_sound = pygame.mixer.Sound(SOUNDS_PATH + 'corridaObsSounds/jump.mp3')
+        pygame.mixer.music.load(SOUNDS_PATH + 'corridaObsSounds/themeSong.mp3')
         pygame.mixer.music.play(-1)
-        lose_effect = pygame.mixer.Sound(SOUNDS_PATH + 'youLose.mp3')
-        win_effect = pygame.mixer.Sound(SOUNDS_PATH + 'youWin.mp3')
+        lose_effect = pygame.mixer.Sound(SOUNDS_PATH + 'corridaObsSounds/youLose.mp3')
+        win_effect = pygame.mixer.Sound(SOUNDS_PATH + 'corridaObsSounds/youWin.mp3')
 
         # sprite corrida
         if character == "U":
