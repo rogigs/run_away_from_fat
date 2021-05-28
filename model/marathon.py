@@ -114,7 +114,16 @@ class Marathon(HUD):
         self._control_game_state()
         self._draw_boost()
         self._draw_adversary()
-   
+    
+    def _events_button_pause(self, event):
+        if event.type == MOUSEBUTTONDOWN:
+            self.detect_mousedown(pygame.mouse.get_pos())
+        elif event.type == MOUSEBUTTONUP:
+            result = self.detect_mouseup(pygame.mouse.get_pos())
+            if not result:
+                pygame.mixer.quit()
+                return False
+
     def _control_events(self): 
         if not self.show_tutor:
             if pygame.key.get_pressed()[pygame.K_LEFT]:
@@ -129,18 +138,14 @@ class Marathon(HUD):
                         self._pos_x_character += self._velocity * 0.8
                 if event.type == self._CLOCKTICK:
                     self._temporizador -= 1
-        
+                self._events_button_pause(event)
+
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
                     self.show_tutor = False
-            if event.type == MOUSEBUTTONDOWN:
-                    self.detect_mousedown(pygame.mouse.get_pos())
-            elif event.type == MOUSEBUTTONUP:
-                result = self.detect_mouseup(pygame.mouse.get_pos())
-                if not result:
-                    pygame.mixer.quit()
-                    return False
+            
+            self._events_button_pause(event)
 
         if self._pos_x_character > 900:
             self._pos_x_character = 900
@@ -259,10 +264,14 @@ class Marathon(HUD):
                 self._colision()
 
                 timer1 = font.render('Tempo ' + str(self._temporizador), True, (0, 0, 0))
-                self.screen.blit(timer1, (50, 50))        
+                self.screen.blit(timer1, (120, 30))        
+
+            self.show_pause_button()
+
 
             pygame.display.update()
             pygame.display.flip()
+
 
             """
                 Return result, Time, level

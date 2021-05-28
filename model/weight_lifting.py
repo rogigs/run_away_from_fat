@@ -2,6 +2,7 @@ import pygame, sys, random
 from pygame.locals import *
 from model.hud import HUD
 from config import IMAGES_PATH, SOUNDS_PATH
+from utils.position import in_bounds
 
 class Weight_lifting(HUD):
     def __init__(self, screen, character):
@@ -27,6 +28,16 @@ class Weight_lifting(HUD):
         textsurface = myfont.render('{} Kg'.format(self.weight), False, (0, 0, 0))
         self.screen.blit(textsurface,(75,220))
     
+    def detect_mousedown(self, pos):
+        if in_bounds(pos, self.pause_bounds):
+            self.press_pause_button()
+
+    def detect_mouseup(self, pos):
+        if in_bounds(pos, self.pause_bounds):
+            return self.show_pause()
+        self.reset_imgs()
+        return True
+
     """
     When arrow arrived the end. It return for the begin
     """
@@ -58,6 +69,13 @@ class Weight_lifting(HUD):
                             self._control_velocity_player()
                     if event.key == pygame.K_s:
                         self.show_tutor = False
+            if event.type == MOUSEBUTTONDOWN:
+                self.detect_mousedown(pygame.mouse.get_pos())
+            elif event.type == MOUSEBUTTONUP:
+                result = self.detect_mouseup(pygame.mouse.get_pos())
+                if not result:
+                    pygame.mixer.quit()
+                    return False
 
     def _show_tutor(self):
         if self.show_tutor:
@@ -129,6 +147,8 @@ class Weight_lifting(HUD):
                 break
                
             self.show_status()
+            self.show_pause_button()
+
             
             pygame.display.flip()
             pygame.display.update()

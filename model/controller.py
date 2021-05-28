@@ -13,7 +13,7 @@ class Controller:
         self.width, self.height = pygame.display.get_surface().get_size()
         self.on = True
 
-        # self.minigame =  Weight_lifting(self.screen, Data.get_character()[0])
+        self.minigame =  Weight_lifting(self.screen, Data.get_character()[0])
 
     def minigame_end(self, result, kind):
         if type(result) == int:
@@ -81,16 +81,16 @@ class Controller:
                 elif event.type == MOUSEBUTTONUP:
                     pass
             
-            marathon = Marathon(self.screen).marathon()
+            # marathon = Marathon(self.screen).marathon()
 
-            self.minigame_end(marathon, "")
+            # self.minigame_end(marathon, "")
 
             # corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
             #                                                                     Data.get_status()["speed"])
             # self.minigame_end(corrida_result, "speed")
 
-            # weight_lifting = self.minigame.weightlifting(Data.get_status()["strength"])
-            # self.minigame_end(weight_lifting, "strength")
+            weight_lifting = self.minigame.weightlifting(Data.get_status()["strength"])
+            self.minigame_end(weight_lifting, "strength")
             # biking_result=Biking(self.screen).biking_minigame(Data.get_character()[0],
             #                                         Data.get_status()["resistance"])
             # self.minigame_end(biking_result, "resistance")
