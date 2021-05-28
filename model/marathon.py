@@ -90,7 +90,8 @@ class Marathon(HUD):
                 else:
                     self._velocity = self._number_velocity * 2 
 
-            
+            self.end_game += 1
+
     def _draw_boost(self):
         if self._if_random_boost == 3:
             flash = pygame.image.load(IMAGES_PATH +"marathon/flash.png").convert_alpha()
@@ -117,15 +118,15 @@ class Marathon(HUD):
     def _control_events(self): 
         if not self.show_tutor:
             if pygame.key.get_pressed()[pygame.K_LEFT]:
-                    self._pos_x_character -= self._velocity / 2
+                    self._pos_x_character -= self._velocity * 0.8
             if pygame.key.get_pressed()[pygame.K_RIGHT]:
-                    self._pos_x_character += self._velocity / 2
+                    self._pos_x_character += self._velocity * 0.8
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
-                        self._pos_x_character -= self._velocity / 2
+                        self._pos_x_character -= self._velocity * 0.8
                     if event.key == pygame.K_RIGHT:
-                        self._pos_x_character += self._velocity / 2
+                        self._pos_x_character += self._velocity * 0.8
                 if event.type == self._CLOCKTICK:
                     self._temporizador -= 1
         

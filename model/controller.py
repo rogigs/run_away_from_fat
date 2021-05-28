@@ -81,6 +81,10 @@ class Controller:
                 elif event.type == MOUSEBUTTONUP:
                     pass
             
+            marathon = Marathon(self.screen).marathon()
+
+            self.minigame_end(marathon, "")
+
             # corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
             #                                                                     Data.get_status()["speed"])
             # self.minigame_end(corrida_result, "speed")
@@ -91,9 +95,8 @@ class Controller:
             #                                         Data.get_status()["resistance"])
             # self.minigame_end(biking_result, "resistance")
 
-            marathon = Marathon(self.screen).marathon()
-
-            self.minigame_end(marathon, "")
+            
+         
 
 
             corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
