@@ -75,6 +75,7 @@ class Marathon(HUD):
             
             while self._random_pos_adversary == self._random_pos_boost or self._random_pos_adversary_aux == self._random_pos_boost:
                     self._random_pos_boost = random.randint(0, 2)
+                    
 
             self._pos_y_obstacles = 0
             self._pos_y_boost = 0
@@ -88,10 +89,18 @@ class Marathon(HUD):
                     self._boost = False
                     self._velocity = self._number_velocity
                 else:
-                    self._velocity = self._number_velocity * 2 
+                    self._velocity = self._number_velocity * 10
 
             self.end_game += 1
+    
+    def _draw_finished(self, line):
+        line_finish = pygame.image.load(IMAGES_PATH + "marathon/line_finish.png").convert_alpha()
+        if line != 400:
+            self.screen.blit(line_finish, [self._size_screen[2]/2 - 300, line ])
+        else:
+            self.screen.blit(line_finish, [self._size_screen[2]/2 - 300, 400 ])
 
+                
     def _draw_boost(self):
         if self._if_random_boost == 3:
             flash = pygame.image.load(IMAGES_PATH +"marathon/flash.png").convert_alpha()
@@ -112,8 +121,9 @@ class Marathon(HUD):
 
     def _obstacles(self):
         self._control_game_state()
-        self._draw_boost()
-        self._draw_adversary()
+        if self.end_game <= 2:
+            self._draw_boost()
+            self._draw_adversary()
     
     def _events_button_pause(self, event):
         if event.type == MOUSEBUTTONDOWN:
@@ -154,13 +164,13 @@ class Marathon(HUD):
 
     def _pista(self):
         #left
-        if self._pos_x_character > 320 and self._pos_x_character < 520 and self._pos_y_obstacles + 110 > self._size_screen[3] - 100:
+        if self._pos_x_character > 320 and self._pos_x_character < 520 and self._pos_y_obstacles + 20 > self._size_screen[3] - 100:
             return [320, 520]
         #middle
-        elif self._pos_x_character > 540 and self._pos_x_character < 740  and self._pos_y_obstacles + 110 > self._size_screen[3] - 100:
+        elif self._pos_x_character > 540 and self._pos_x_character < 740  and self._pos_y_obstacles + 20 > self._size_screen[3] - 100:
             return [540, 740]
         #right
-        elif self._pos_x_character > 760 and self._pos_x_character < 960 and self._pos_y_obstacles + 110 > self._size_screen[3] - 100:
+        elif self._pos_x_character > 760 and self._pos_x_character < 960 and self._pos_y_obstacles + 20 > self._size_screen[3] - 100:
             return [760, 960]
         else:
             return [0,0]
@@ -230,12 +240,15 @@ class Marathon(HUD):
             tutorial = pygame.image.load(IMAGES_PATH + "weightlifiting/tutorial.png").convert_alpha()
             tutorial_print = tutorial.get_rect(center=(1280/2 - 25, 720/2 + 25))
             pygame.draw.rect(self.screen, [0, 0, 0], [284, 264, 633, 201])
+          
             self.screen.blit(tutorial, (tutorial_print))
 
     def marathon(self): 
         #criando objeto Clock
         font = pygame.font.SysFont('sans', 40)
-        pygame.time.set_timer(self._CLOCKTICK, 1000)   
+        pygame.time.set_timer(self._CLOCKTICK, 1000)    
+        pos_y_finish = 0 
+        line = 0
         while True:
             self._pos_y_background -= self._velocity
             self._clock.tick(12)
@@ -250,21 +263,29 @@ class Marathon(HUD):
             if self._pos_y_background < -100:
                 self._pos_y_background = 0
 
-
+            if self.end_game > 2:                     
+                line += self._velocity
+                self._draw_finished(line)
+                pos_y_finish += self._velocity
+                if self._size_screen[3] - 100 - pos_y_finish < 200:
+                    return 0
+    
             character = self._effect_runner("character")
-            self.screen.blit(character, [self._pos_x_character - 70 , self._size_screen[3] - 100 ])
+            self.screen.blit(character, [self._pos_x_character - 70 , self._size_screen[3] - 100 - pos_y_finish ])
 
             self._control_events()
             
             if self.show_tutor:
                 self._show_tutor()
             else:
-                self._obstacles()
+                if self.end_game <= 2:
+                    timer1 = font.render('Tempo ' + str(self._temporizador), True, (0, 0, 0))
+                    self.screen.blit(timer1, (120, 30))    
 
-                self._colision()
+                    self._obstacles()
 
-                timer1 = font.render('Tempo ' + str(self._temporizador), True, (0, 0, 0))
-                self.screen.blit(timer1, (120, 30))        
+                    self._colision()
+    
 
             self.show_pause_button()
 
@@ -278,6 +299,5 @@ class Marathon(HUD):
             """
             if self._temporizador == 0 and self.end_game < 5:
                 return 0
-            if self.end_game > 5:     
-                return 0
+            
                 
