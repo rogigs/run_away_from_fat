@@ -2,6 +2,7 @@ import pygame, sys, random
 from pygame.locals import *
 from model.hud import HUD
 from config import IMAGES_PATH, SOUNDS_PATH
+from utils.position import in_bounds
 
 class Marathon(HUD):
     def __init__(self, screen):
@@ -47,6 +48,16 @@ class Marathon(HUD):
         self._aux_boost = 0
 
         self.end_game = 0
+
+    def detect_mousedown(self, pos):
+        if in_bounds(pos, self.pause_bounds):
+            self.press_pause_button()
+
+    def detect_mouseup(self, pos):
+        if in_bounds(pos, self.pause_bounds):
+            return self.show_pause()
+        self.reset_imgs()
+        return True
 
     def _control_game_state(self):
         if self._pos_y_obstacles > self._size_screen[3]:
@@ -117,11 +128,18 @@ class Marathon(HUD):
                         self._pos_x_character += self._velocity / 2
                 if event.type == self._CLOCKTICK:
                     self._temporizador -= 1
-        else:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_s:
-                            self.show_tutor = False
+        
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_s:
+                    self.show_tutor = False
+            if event.type == MOUSEBUTTONDOWN:
+                    self.detect_mousedown(pygame.mouse.get_pos())
+            elif event.type == MOUSEBUTTONUP:
+                result = self.detect_mouseup(pygame.mouse.get_pos())
+                if not result:
+                    pygame.mixer.quit()
+                    return False
 
         if self._pos_x_character > 900:
             self._pos_x_character = 900

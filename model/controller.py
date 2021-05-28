@@ -87,8 +87,17 @@ class Controller:
 
             # weight_lifting = self.minigame.weightlifting(Data.get_status()["strength"])
             # self.minigame_end(weight_lifting, "strength")
+            # biking_result=Biking(self.screen).biking_minigame(Data.get_character()[0],
+            #                                         Data.get_status()["resistance"])
+            # self.minigame_end(biking_result, "resistance")
+
             marathon = Marathon(self.screen).marathon()
 
             self.minigame_end(marathon, "")
 
 
+            corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
+                                                                                Data.get_status()["speed"])
+            self.minigame_end(corrida_result, "speed")
+            
+        
