@@ -101,3 +101,6 @@ class Controller:
             self.minigame_end(corrida_result, "speed")
             
         
+            biking_result=Biking(self.screen).biking_minigame(Data.get_character()[0],
+                                                    Data.get_status()["resistance"])
+            self.minigame_end(biking_result, "resistance")
