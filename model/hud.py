@@ -117,7 +117,7 @@ class HUD:
 
     def show_status(self):
         width = 300
-        font = pygame.font.SysFont("FreePixel", 22)
+        font = pygame.font.Font("assets/font/FreePixel.ttf", 22)
         back = pygame.Surface((312, 124))
         back.set_alpha(128)
         back.fill((128, 128, 128))

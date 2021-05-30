@@ -1,9 +1,9 @@
 import pygame
 from pygame.locals import *
 from model.corrida_de_obstaculos import CorridaDeObstaculos
-from model.weight_lifting import Weight_lifting
+from model.weight_lifting import WeightLifting
 from model.marathon import Marathon
-from model.biking import  Biking
+from model.biking import Biking
 from utils.data_manipulation import Data
 
 
@@ -13,7 +13,7 @@ class Controller:
         self.width, self.height = pygame.display.get_surface().get_size()
         self.on = True
 
-        self.minigame =  Weight_lifting(self.screen, Data.get_character()[0])
+        self.minigame =  WeightLifting(self.screen, Data.get_character()[0])
 
     def minigame_end(self, result, kind=""):
         if type(result) == int:
@@ -22,7 +22,7 @@ class Controller:
             back.set_alpha(215)
             back.fill((0, 0, 0))
             self.screen.blit(back, (0, 0))
-            self.write(text=f"Fim do {Data.get_day()}º dia", size=48,where=(self.width/2, 300))
+            self.write(text=f"Fim do {Data.get_day()}º dia", size=48, where=(self.width / 2, 300))
             self.write(text="Pressione <Enter> para continuar", size=32,
                        where=(self.width / 2, self.height / 2 + 200))
 
@@ -40,7 +40,6 @@ class Controller:
                         pygame.quit()
                         exit()
                     elif event.type == KEYUP and event.key == K_RETURN:
-                        self.on = False
                         return
         elif not result:
             self.on = False
@@ -53,15 +52,13 @@ class Controller:
         if kind != "":
             if Data.get_status()[kind] <= 90:
                 self.write(text=f"+{result} pontos de {translation[kind]} lhe foram atribuidos", size=32,
-                        where=(self.width / 2, self.height / 2))
+                           where=(self.width / 2, self.height / 2))
             else:
                 self.write(text=f"Você alcançou o limite da {translation[kind]} humana", size=32,
-                        where=(self.width / 2, self.height / 2 + 100))
-
-
+                           where=(self.width / 2, self.height / 2 + 100))
 
     def write(self, text="", size=32, color=(255, 255, 255), where=(0, 0)):
-        font = pygame.font.SysFont("FreePixel", size)
+        font = pygame.font.Font("assets/font/FreePixel.ttf", size)
         content = font.render(text, True, color)
         self.screen.blit(content, (where[0] - content.get_width() / 2, where[1]))
 
@@ -69,7 +66,8 @@ class Controller:
         # title
         self.write(text="Você perdeu!", size=72, color=(255, 0, 0), where=(self.width / 2, 100))
         # description
-        self.write(text="Nenhum ponto de status lhe foi atribuido", size=32, where=(self.width / 2, self.height / 2 + 100))
+        self.write(text="Nenhum ponto de status lhe foi atribuido", size=32,
+                   where=(self.width / 2, self.height / 2 + 100))
 
     def show(self):
         self.on = True
