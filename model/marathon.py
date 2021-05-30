@@ -279,7 +279,7 @@ class Marathon(HUD):
                 self._draw_finished(line)
                 pos_y_finish += self._velocity
                 if self._size_screen[3] - 100 - pos_y_finish < 200:
-                    return 0
+                    return 10
     
             character = self._effect_runner("character")
             self.screen.blit(character, [self._pos_x_character - 70 , self._size_screen[3] - 100 - pos_y_finish ])

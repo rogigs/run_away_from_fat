@@ -27,7 +27,8 @@ class Controller:
                        where=(self.width / 2, self.height / 2 + 200))
 
             if result > 0:
-                Data.increase_status(result, kind)
+                if kind != '':
+                    Data.increase_status(result, kind)
                 self.show_win_screen(result, kind)
             else:
                 self.show_loss_screen()
@@ -49,12 +50,13 @@ class Controller:
         # title
         self.write(text="Você venceu!", size=72, color=(0, 255, 0), where=(self.width / 2, 100))
         # description
-        if Data.get_status()[kind] <= 90:
-            self.write(text=f"+{result} pontos de {translation[kind]} lhe foram atribuidos", size=32,
-                       where=(self.width / 2, self.height / 2))
-        else:
-            self.write(text=f"Você alcançou o limite da {translation[kind]} humana", size=32,
-                       where=(self.width / 2, self.height / 2 + 100))
+        if kind != "":
+            if Data.get_status()[kind] <= 90:
+                self.write(text=f"+{result} pontos de {translation[kind]} lhe foram atribuidos", size=32,
+                        where=(self.width / 2, self.height / 2))
+            else:
+                self.write(text=f"Você alcançou o limite da {translation[kind]} humana", size=32,
+                        where=(self.width / 2, self.height / 2 + 100))
 
 
 
@@ -81,16 +83,16 @@ class Controller:
                 elif event.type == MOUSEBUTTONUP:
                     pass
             
-            # marathon = Marathon(self.screen).marathon()
+            marathon = Marathon(self.screen).marathon()
 
-            # self.minigame_end(marathon, "")
+            self.minigame_end(marathon, "")
 
             # corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
             #                                                                     Data.get_status()["speed"])
             # # self.minigame_end(corrida_result, "speed")
 
-            weight_lifting = self.minigame.weightlifting(Data.get_status()["strength"])
-            self.minigame_end(weight_lifting, "strength")
+            # weight_lifting = self.minigame.weightlifting(Data.get_status()["strength"])
+            # self.minigame_end(weight_lifting, "strength")
             # # biking_result=Biking(self.screen).biking_minigame(Data.get_character()[0],
             #                                         Data.get_status()["resistance"])
             # self.minigame_end(biking_result, "resistance")
