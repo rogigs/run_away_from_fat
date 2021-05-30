@@ -1,3 +1,4 @@
+from os import close, stat
 import pygame, sys, random
 from pygame.locals import *
 from model.hud import HUD
@@ -9,8 +10,11 @@ class Marathon(HUD):
         super().__init__(screen) 
 
         self.show_tutor = True
+        self._character = "usaim"
 
         self._clock = pygame.time.Clock()
+        self._time_clock = 12
+        self._time_clock_initial = self._time_clock
         self._CLOCKTICK = pygame.USEREVENT+3
         self._temporizador = 60
         self._initial_temp = self._temporizador
@@ -21,7 +25,7 @@ class Marathon(HUD):
         self._velocity = self._number_velocity
 
         self._images = {
-            "character": [True, "marathon/usaim_run_1.png", "marathon/usaim_run_2.png"],
+            "character": [True, "marathon/" + self._character + "_run_1.png", "marathon/usaim_run_2.png"],
             "runner1": [True, "marathon/usaim_run_1.png", "marathon/usaim_run_2.png"],
             "runner2": [True, "marathon/usaim_run_1.png", "marathon/usaim_run_2.png"],
         }
@@ -48,6 +52,8 @@ class Marathon(HUD):
         self._aux_boost = 0
 
         self.end_game = 0
+        self._end_game_value = 10
+
 
     def detect_mousedown(self, pos):
         if in_bounds(pos, self.pause_bounds):
@@ -76,20 +82,21 @@ class Marathon(HUD):
             while self._random_pos_adversary == self._random_pos_boost or self._random_pos_adversary_aux == self._random_pos_boost:
                     self._random_pos_boost = random.randint(0, 2)
                     
+            
+            if self._boost:  
+                self._aux_boost += 1
+                self._time_clock = 0            
+                if self._aux_boost > 3:
+                    self._aux_boost = 0
+                    self._boost = False
+                    self._time_clock = self._time_clock_initial
+                    self._velocity = self._number_velocity
+                else:
+                    self._velocity = self._number_velocity * 10
 
             self._pos_y_obstacles = 0
             self._pos_y_boost = 0
             self._pos_y_obstacles_aux = [0 , 0]
-
-
-            if self._boost:  
-                self._aux_boost += 1
-                if self._aux_boost > 3:
-                    self._aux_boost = 0
-                    self._boost = False
-                    self._velocity = self._number_velocity
-                else:
-                    self._velocity = self._number_velocity * 10
 
             self.end_game += 1
     
@@ -121,7 +128,7 @@ class Marathon(HUD):
 
     def _obstacles(self):
         self._control_game_state()
-        if self.end_game <= 2:
+        if self.end_game <= self._end_game_value:
             self._draw_boost()
             self._draw_adversary()
     
@@ -247,21 +254,54 @@ class Marathon(HUD):
           
             self.screen.blit(tutorial, (tutorial_print))
 
-    def marathon(self): 
-        #criando objeto Clock
+    def _control_character(self, character):
+        if character == "U":
+            self._character = "usaim"
+            print(self._character)
+        else:
+            self._character = "rad"
+
+    def _control_difficult(self, status):
+        resistance = status["resistance"]
+        speed = status["speed"]
+        strength = status["strength"]
+        difficult = "facil_demais"
+        if strength > 20 and resistance > 20 and speed > 20:
+            self._number_velocity = 25
+            self._time_clock = 14
+            self._end_game_value = 12
+            difficult = "facil"
+        if strength > 50 and resistance > 50 and speed > 20:
+            self._number_velocity = 35
+            self._time_clock = 20
+            difficult = "medio"
+            self._end_game_value = 15
+        if strength > 70 and resistance > 70 and speed > 20:
+            self._number_velocity = 45
+            self._time_clock = 25
+            self._end_game_value = 20
+            difficult = "dificil"
+        
+        return difficult
+
+    def marathon(self, character, status): 
         font = pygame.font.SysFont('sans', 40)
         pygame.time.set_timer(self._CLOCKTICK, 1000)    
+        
         pos_y_finish = 0 
         line = 0
+        
         pygame.mixer.music.load(SOUNDS_PATH+'marathon/background.mp3')
         pygame.mixer.music.play(-1)
         boost_sound = pygame.mixer.Sound(SOUNDS_PATH+'marathon/boost.wav')
-
+        
+        self._control_character(character)
+        difficult = self._control_difficult(status)
+        
         while True:
             self._pos_y_background -= self._velocity
-            self._clock.tick(12)
 
-           
+            self._clock.tick(self._time_clock)
                    
             track = pygame.image.load(IMAGES_PATH + "marathon/track.png").convert_alpha()
             outside_track = pygame.image.load(IMAGES_PATH + "marathon/outside.png").convert_alpha()
@@ -273,13 +313,16 @@ class Marathon(HUD):
             if self._pos_y_background < -100:
                 self._pos_y_background = 0
 
-            # WINNER
-            if self.end_game > 2:                     
+             # WINNER
+            """
+                Return result, Time, level
+            """
+            if self.end_game > self._end_game_value:                     
                 line += self._velocity
                 self._draw_finished(line)
                 pos_y_finish += self._velocity
                 if self._size_screen[3] - 100 - pos_y_finish < 200:
-                    return 10
+                    return  10, self._temporizador, difficult
     
             character = self._effect_runner("character")
             self.screen.blit(character, [self._pos_x_character - 70 , self._size_screen[3] - 100 - pos_y_finish ])
@@ -289,7 +332,7 @@ class Marathon(HUD):
             if self.show_tutor:
                 self._show_tutor()
             else:
-                if self.end_game <= 2:
+                if self.end_game <= self._end_game_value:
                     timer1 = font.render('Tempo ' + str(self._temporizador), True, (0, 0, 0))
                     self.screen.blit(timer1, (120, 30))    
 
@@ -309,7 +352,7 @@ class Marathon(HUD):
             """
                 Return result, Time, level
             """
-            if self._temporizador == 0 and self.end_game < 5:
-                return 0
+            if self._temporizador == 0 and self.end_game < self._end_game_value:
+                return 0, self._temporizador, difficult
             
                 
