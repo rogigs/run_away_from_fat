@@ -48,6 +48,7 @@ class Marathon(HUD):
         self._aux_boost = 0
 
         self.end_game = 0
+        self.quit = False
 
     def detect_mousedown(self, pos):
         if in_bounds(pos, self.pause_bounds):
@@ -132,7 +133,7 @@ class Marathon(HUD):
             result = self.detect_mouseup(pygame.mouse.get_pos())
             if not result:
                 pygame.mixer.quit()
-                return False
+                self.quit = True
 
     def _control_events(self): 
         if not self.show_tutor:
@@ -275,12 +276,12 @@ class Marathon(HUD):
                 self._pos_y_background = 0
 
             # WINNER
-            if self.end_game > 2:                     
+            if self.end_game > 9:
                 line += self._velocity
                 self._draw_finished(line)
                 pos_y_finish += self._velocity
                 if self._size_screen[3] - 100 - pos_y_finish < 200:
-                    return 10
+                    return self._temporizador
     
             character = self._effect_runner("character")
             self.screen.blit(character, [self._pos_x_character - 70 , self._size_screen[3] - 100 - pos_y_finish ])
@@ -290,7 +291,7 @@ class Marathon(HUD):
             if self.show_tutor:
                 self._show_tutor()
             else:
-                if self.end_game <= 2:
+                if self.end_game <= 9:
                     timer1 = font.render('Tempo ' + str(self._temporizador), True, (0, 0, 0))
                     self.screen.blit(timer1, (120, 30))    
 
@@ -310,7 +311,8 @@ class Marathon(HUD):
             """
                 Return result, Time, level
             """
-            if self._temporizador == 0 and self.end_game < 5:
+            if self._temporizador == 0:
                 return 0
-            
+            elif self.quit:
+                return None
                 

@@ -78,18 +78,18 @@ class Controller:
                     pass
                 elif event.type == MOUSEBUTTONUP:
                     pass
-            ex = Data.get_next_exercise()
-            if ex == "marathon":
-                marathon = Marathon(self.screen).marathon()
-                self.minigame_end(marathon, "")
-            elif ex == "resistance":
-                biking_result = Biking(self.screen).biking_minigame(Data.get_character()[0],
-                                                                    Data.get_status()["resistance"])
-                self.minigame_end(biking_result, "resistance")
-            elif ex == "strength":
-                weight_result = WeightLifting(self.screen, None).weightlifting(Data.get_status()["strength"])
-                self.minigame_end(weight_result, "strength")
-            else:
-                corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
-                                                                                    Data.get_status()["speed"])
-                self.minigame_end(corrida_result, "speed")
+            # ex = Data.get_next_exercise()
+            # if ex == "marathon":
+            marathon = Marathon(self.screen).marathon()
+            self.minigame_end(marathon, "")
+            # elif ex == "resistance":
+            #     biking_result = Biking(self.screen).biking_minigame(Data.get_character()[0],
+            #                                                         Data.get_status()["resistance"])
+            #     self.minigame_end(biking_result, "resistance")
+            # elif ex == "strength":
+            #     weight_result = WeightLifting(self.screen, None).weightlifting(Data.get_status()["strength"])
+            #     self.minigame_end(weight_result, "strength")
+            # else:
+            #     corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
+            #                                                                         Data.get_status()["speed"])
+            #     self.minigame_end(corrida_result, "speed")
