@@ -181,28 +181,32 @@ class Marathon(HUD):
         else:
             self._pos_y_obstacles_aux[0] += self._velocity
     
-    def _colision_boost(self, left, right):
+    def _colision_boost(self, left, right, sound):
         if left == 320 and right == 520 and self._random_pos_boost == 0:
             self._pos_y_boost = -900
             self._boost = True
+            sound.play()
         elif left == 540 and right == 740 and self._random_pos_boost == 1:
             self._pos_y_boost = -900
             self._boost = True
+            sound.play()
         #right
         elif left == 760 and right == 960 and self._random_pos_boost == 2:
             self._pos_y_boost = -900
             self._boost = True
+            sound.play()
         else:
             self._boost = False
             
-    def _colision(self):
+    def _colision(self, sound):
         adversary_left = (self._random_pos_adversary == 0 or self._random_pos_adversary_aux == 0 ) 
         adversary_middle = (self._random_pos_adversary == 1 or self._random_pos_adversary_aux == 1 ) 
         adversary_right = (self._random_pos_adversary == 2 or self._random_pos_adversary_aux == 2 ) 
 
         [left, right] = self._pista()
 
-        self._colision_boost(left, right)
+        if self._if_random_boost == 3:
+            self._colision_boost(left, right, sound)
 
         if self._random_number_adversary == 1:
             self._random_pos_adversary_aux = -1
@@ -249,9 +253,15 @@ class Marathon(HUD):
         pygame.time.set_timer(self._CLOCKTICK, 1000)    
         pos_y_finish = 0 
         line = 0
+        pygame.mixer.music.load(SOUNDS_PATH+'marathon/background.mp3')
+        pygame.mixer.music.play(-1)
+        boost_sound = pygame.mixer.Sound(SOUNDS_PATH+'marathon/boost.wav')
+
         while True:
             self._pos_y_background -= self._velocity
             self._clock.tick(12)
+
+           
                    
             track = pygame.image.load(IMAGES_PATH + "marathon/track.png").convert_alpha()
             outside_track = pygame.image.load(IMAGES_PATH + "marathon/outside.png").convert_alpha()
@@ -263,6 +273,7 @@ class Marathon(HUD):
             if self._pos_y_background < -100:
                 self._pos_y_background = 0
 
+            # WINNER
             if self.end_game > 2:                     
                 line += self._velocity
                 self._draw_finished(line)
@@ -284,7 +295,7 @@ class Marathon(HUD):
 
                     self._obstacles()
 
-                    self._colision()
+                    self._colision(boost_sound)
     
 
             self.show_pause_button()
@@ -294,6 +305,7 @@ class Marathon(HUD):
             pygame.display.flip()
 
 
+            # LOSE
             """
                 Return result, Time, level
             """
