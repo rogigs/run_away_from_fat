@@ -249,10 +249,11 @@ class Marathon(HUD):
 
     def marathon(self): 
         #criando objeto Clock
-        font = pygame.font.SysFont('sans', 40)
+        font = pygame.font.Font("assets/font/FreePixel.ttf", 40)
         pygame.time.set_timer(self._CLOCKTICK, 1000)    
         pos_y_finish = 0 
         line = 0
+        pygame.mixer.init()
         pygame.mixer.music.load(SOUNDS_PATH+'marathon/background.mp3')
         pygame.mixer.music.play(-1)
         boost_sound = pygame.mixer.Sound(SOUNDS_PATH+'marathon/boost.wav')
