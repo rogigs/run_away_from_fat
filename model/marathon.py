@@ -142,6 +142,9 @@ class Marathon(HUD):
             if pygame.key.get_pressed()[pygame.K_RIGHT]:
                     self._pos_x_character += self._velocity * 0.8
             for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    exit()
                 if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
                         self._pos_x_character -= self._velocity * 0.8
@@ -152,6 +155,9 @@ class Marathon(HUD):
                 self._events_button_pause(event)
 
         for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
                     self.show_tutor = False
