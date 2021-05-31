@@ -117,24 +117,24 @@ class HUD:
 
     def show_status(self):
         width = 300
-        font = pygame.font.SysFont("FreePixel", 22)
+        font = pygame.font.Font("assets/font/FreePixel.ttf", 22)
         back = pygame.Surface((312, 124))
         back.set_alpha(128)
         back.fill((128, 128, 128))
         status = Data.get_status()
-        self.screen.blit(back, (10, 594))
+        self.screen.blit(back, (900, 594))
         # speed
-        pygame.draw.rect(self.screen, (0, 255, 0), (16, 600, width / 100 * status["speed"], 30))
-        pygame.draw.rect(self.screen, (0, 0, 0), (16, 600, width, 30), width=3)
+        pygame.draw.rect(self.screen, (0, 255, 0), (906, 600, width / 100 * status["speed"], 30))
+        pygame.draw.rect(self.screen, (0, 0, 0), (906, 600, width, 30), width=3)
         text = font.render("VELOCIDADE", True, (0, 0, 0))
-        self.screen.blit(text, (16+300/2-text.get_width()/2, 605))
+        self.screen.blit(text, (906+300/2-text.get_width()/2, 605))
         # strength
-        pygame.draw.rect(self.screen, (255, 0, 0), (16, 640, width / 100 * status["strength"], 30))
-        pygame.draw.rect(self.screen, (0, 0, 0), (16, 640, width, 30), width=3)
+        pygame.draw.rect(self.screen, (255, 0, 0), (906, 640, width / 100 * status["strength"], 30))
+        pygame.draw.rect(self.screen, (0, 0, 0), (906, 640, width, 30), width=3)
         text = font.render("FORÇA", True, (0, 0, 0))
-        self.screen.blit(text, (16+300/2-text.get_width()/2, 645))
+        self.screen.blit(text, (906+300/2-text.get_width()/2, 645))
         # resistance
-        pygame.draw.rect(self.screen, (0, 0, 255), (16, 680, width / 100 * status["resistance"], 30))
-        pygame.draw.rect(self.screen, (0, 0, 0), (16, 680, width, 30), width=3)
+        pygame.draw.rect(self.screen, (0, 0, 255), (906, 680, width / 100 * status["resistance"], 30))
+        pygame.draw.rect(self.screen, (0, 0, 0), (906, 680, width, 30), width=3)
         text = font.render("RESISTÊNCIA", True, (0, 0, 0))
-        self.screen.blit(text, (16+300/2-text.get_width()/2, 685))
+        self.screen.blit(text, (906+300/2-text.get_width()/2, 685))

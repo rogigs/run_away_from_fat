@@ -192,7 +192,7 @@ class CorridaDeObstaculos(HUD):
         pygame.time.set_timer(CONTADOR, 1000)  # configurado o timer do Pygame para execução a cada 1 segundo
         temporizador = 15
 
-        font = pygame.font.SysFont('sans', 40)
+        font = pygame.font.Font("assets/font/FreePixel.ttf", 40)
 
         # vidas
         # carrega imagem do coração vermelho

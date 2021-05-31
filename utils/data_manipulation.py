@@ -6,6 +6,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS user (
     person char,
     days integer,
     coins integer,
+    next_ex text,
     speed integer,
     strength integer,
     resistance integer,
@@ -37,8 +38,8 @@ class Data:
             c = conn.cursor()
             if c.execute("SELECT * FROM user").fetchone():
                 c.execute("DELETE FROM user where days>=0")
-            c.execute("INSERT INTO user values (?, ?, ?, ?, ?, ?)",
-                      [who, 0, 0, 0, 0, 0])
+            c.execute("INSERT INTO user values (?, ?, ?, ?, ?, ?, ?)",
+                      [who, 0, 0, "", 0, 0, 0])
             conn.commit()
             conn.close()
             return True
@@ -60,7 +61,7 @@ class Data:
 
     @staticmethod
     def increase_status(num, kind):
-        kind_to_index = {"speed": 3, "strength": 4, "resistance": 5}
+        kind_to_index = {"speed": 4, "strength": 5, "resistance": 6}
         try:
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
@@ -82,6 +83,7 @@ class Data:
             c.execute(f"UPDATE user set days = days + 1 WHERE days >= 0")
             conn.commit()
             conn.close()
+            Data.set_next_exercise()
             return
         except Exception as ex:
             print(ex)
@@ -95,7 +97,7 @@ class Data:
             user = c.fetchone()
             conn.commit()
             conn.close()
-            return {"speed": user[3], "strength": user[4], "resistance": user[5]}
+            return {"speed": user[4], "strength": user[5], "resistance": user[6]}
         except Exception as ex:
             print(ex)
 
@@ -109,5 +111,39 @@ class Data:
             conn.commit()
             conn.close()
             return user[1]
+        except Exception as ex:
+            print(ex)
+
+    @staticmethod
+    def set_next_exercise():
+        try:
+            conn = sqlite3.connect("database.db")
+            c = conn.cursor()
+            last_kind = c.execute("SELECT * FROM user").fetchone()[3]
+
+            if last_kind == "speed":
+                next_kind = "strength"
+            elif last_kind == "strength":
+                next_kind = "resistance"
+            elif last_kind == "resistance":
+                next_kind = "marathon"
+            else:
+                next_kind = "speed"
+            c.execute("UPDATE user SET next_ex=?", (next_kind,))
+            conn.commit()
+            conn.close()
+        except Exception as ex:
+            print(ex)
+
+    @staticmethod
+    def get_next_exercise():
+        try:
+            conn = sqlite3.connect("database.db")
+            c = conn.cursor()
+            next_ex = c.execute("SELECT * FROM user").fetchone()[3]
+            conn.commit()
+            conn.close()
+
+            return next_ex
         except Exception as ex:
             print(ex)
