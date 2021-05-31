@@ -190,7 +190,7 @@ class CorridaDeObstaculos(HUD):
 
         CONTADOR = pygame.USEREVENT + 2
         pygame.time.set_timer(CONTADOR, 1000)  # configurado o timer do Pygame para execução a cada 1 segundo
-        temporizador = 60
+        temporizador = 15
 
         font = pygame.font.SysFont('sans', 40)
 
