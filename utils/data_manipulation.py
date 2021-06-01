@@ -159,7 +159,6 @@ class Data:
             saves = c.execute("SELECT * FROM user").fetchall()[:5]
             conn.commit()
             conn.close()
-            print(saves)
             return saves
         except Exception as ex:
             print(ex, "get_saves")
