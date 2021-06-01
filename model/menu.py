@@ -20,6 +20,20 @@ class Menu:
         self.continue_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "continuar-jogo.png").convert_alpha())
         self.new_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "novo-jogo.png").convert_alpha())
         self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair.png").convert_alpha())
+        self.sound_img = pygame.transform.scale( pygame.image.load(MENU_IMAGES_PATH + "sound_on.png").convert_alpha(), (215, 150))
+        self.sound_status = True
+
+    def change_sound_status(self):
+        if self.sound_status == True:
+            self.sound_img = pygame.transform.scale(pygame.image.load(MENU_IMAGES_PATH + "sound_off.png").convert_alpha(), (215, 150))
+            self.controller.change_sound_status()
+        elif self.sound_status == False:
+            self.sound_img = pygame.transform.scale(pygame.image.load(MENU_IMAGES_PATH + "sound_on.png").convert_alpha(), (215, 150))
+            self.controller.change_sound_status()
+
+    def sound(self, x, y):
+        """Shows sound button"""
+        self.screen.blit(self.sound_img, (x, y))
 
     def continue_g(self, x, y):
         """Shows 'continuar' button"""
@@ -43,6 +57,7 @@ class Menu:
             self.continue_g(self.width / 3, self.height / 5 * 2)
         self.new_g(self.width / 3, self.height / 5 * 3)
         self.leave_g(self.width / 3, self.height / 5 * 4)
+        self.sound(1050, 550)
 
     def press_continue(self):
         """Changes 'continuar' image to its pressed version."""
@@ -106,6 +121,9 @@ class Menu:
         elif (self.width / 3 <= x <= self.width / 3 + self.new_img.get_width() and
               self.height / 5 * 3 <= y <= self.height / 5 * 3 + self.new_img.get_height()):
             self.drop_new()
+        elif (1050 <= x <=1050+self.sound_img.get_width() and 
+               550 <= y <= 550+self.sound_img.get_height()):
+            self.change_sound_status()
         elif (self.width / 3 <= x <= self.width / 3 + self.leave_img.get_width() and
               self.height / 5 * 4 <= y <= self.height / 5 * 4 + self.leave_img.get_height()):
             self.drop_leave()

@@ -21,7 +21,7 @@ class Biking(HUD):
         self.reset_imgs()
         return True
 
-    def biking_minigame(self, character, resistance):
+    def biking_minigame(self, character, resistance, sound):
 
         # Dificuldade
         dificuldade_lista = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10]
@@ -134,10 +134,11 @@ class Biking(HUD):
         showtutor = True
 
         # Musicas e sons
-        pygame.mixer.music.load(SOUNDS_PATH + 'bikingSounds/themeSong.mp3')
-        pygame.mixer.music.play(-1)
-        men_hit_sound = pygame.mixer.Sound(SOUNDS_PATH + 'bikingSounds/menHey.mp3')
-        bike_sound = pygame.mixer.Sound(SOUNDS_PATH + 'bikingSounds/bicycleBuzzer.mp3')
+        if sound == True:
+            pygame.mixer.music.load(SOUNDS_PATH + 'bikingSounds/themeSong.mp3')
+            pygame.mixer.music.play(-1)
+            men_hit_sound = pygame.mixer.Sound(SOUNDS_PATH + 'bikingSounds/menHey.mp3')
+            bike_sound = pygame.mixer.Sound(SOUNDS_PATH + 'bikingSounds/bicycleBuzzer.mp3')
 
         # pista
         bg_pista = pygame.image.load(IMAGES_PATH + 'biking/pista_bike.png').convert()
@@ -282,8 +283,11 @@ class Biking(HUD):
                 if check_collision(enemy_list):
                     # incrementa 1 na variavel de hits e muda a cor do coração para cinza
                     get_hit += 1
-                    men_hit_sound.play()
-                    bike_sound.play()
+                    try:
+                        men_hit_sound.play()
+                        bike_sound.play()
+                    except:
+                        pass
                     change_heart(lifes_list)
                     if get_hit == 2:
                         loser = True
