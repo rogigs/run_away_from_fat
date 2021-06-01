@@ -3,6 +3,7 @@ import sqlite3
 conn = sqlite3.connect("database.db")
 cursor = conn.cursor()
 cursor.execute("""CREATE TABLE IF NOT EXISTS user (
+    name text,
     person char,
     days integer,
     coins integer,
@@ -10,7 +11,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS user (
     speed integer,
     strength integer,
     resistance integer,
-    PRIMARY KEY (person)
+    PRIMARY KEY (name)
 )""")
 conn.commit()
 conn.close()
@@ -32,19 +33,20 @@ class Data:
         return False
 
     @staticmethod
-    def create_new_person(who):
+    def create_new_person(who, name):
         try:
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
             if c.execute("SELECT * FROM user").fetchone():
                 c.execute("DELETE FROM user where days>=0")
-            c.execute("INSERT INTO user values (?, ?, ?, ?, ?, ?, ?)",
-                      [who, 0, 0, "", 0, 0, 0])
+            c.execute("INSERT INTO user values (?, ?, ?, ?, ?, ?, ?, ?)",
+                      [name, who, 0, 0, "", 0, 0, 0])
             conn.commit()
             conn.close()
             return True
         except Exception as ex:
             print(ex)
+            return False
 
     @staticmethod
     def get_character():
@@ -61,7 +63,7 @@ class Data:
 
     @staticmethod
     def increase_status(num, kind):
-        kind_to_index = {"speed": 4, "strength": 5, "resistance": 6}
+        kind_to_index = {"speed": 5, "strength": 6, "resistance": 7}
         try:
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
@@ -97,7 +99,7 @@ class Data:
             user = c.fetchone()
             conn.commit()
             conn.close()
-            return {"speed": user[4], "strength": user[5], "resistance": user[6]}
+            return {"speed": user[5], "strength": user[6], "resistance": user[7]}
         except Exception as ex:
             print(ex)
 
@@ -110,7 +112,7 @@ class Data:
             user = c.fetchone()
             conn.commit()
             conn.close()
-            return user[1]
+            return user[2]
         except Exception as ex:
             print(ex)
 
@@ -119,7 +121,7 @@ class Data:
         try:
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
-            last_kind = c.execute("SELECT * FROM user").fetchone()[3]
+            last_kind = c.execute("SELECT * FROM user").fetchone()[4]
 
             if last_kind == "speed":
                 next_kind = "strength"
@@ -140,7 +142,7 @@ class Data:
         try:
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
-            next_ex = c.execute("SELECT * FROM user").fetchone()[3]
+            next_ex = c.execute("SELECT * FROM user").fetchone()[4]
             conn.commit()
             conn.close()
 
