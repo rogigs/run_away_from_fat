@@ -64,13 +64,14 @@ class WeightLifting(HUD):
     def _control_velocity_machine(self):
         self._height_machine -= self._velocity
 
-    def _control_events(self, metal_sound):
+    def _control_events(self,metal_sound, sound):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     if not self.show_tutor:
                         self._control_velocity_player()
-                        metal_sound.play()
+                        if sound ==True:
+                            metal_sound.play()
                 if event.key == pygame.K_s:
                     self.show_tutor = False
             if event.type == MOUSEBUTTONDOWN:
@@ -110,12 +111,13 @@ class WeightLifting(HUD):
             self._velocity_space = 30
             self.weight = 100
 
-    def weightlifting(self, strength):
+    def weightlifting(self, strength,sound):
         self._end_game = False
         self._difficult(strength)
-        pygame.mixer.init()
-        pygame.mixer.music.load(SOUNDS_PATH + 'gym/back.mp3')
-        pygame.mixer.music.play(-1)
+        if sound ==True:  
+            pygame.mixer.init()
+            pygame.mixer.music.load(SOUNDS_PATH + 'gym/back.mp3')
+            pygame.mixer.music.play(-1)
         metal_sound = pygame.mixer.Sound(SOUNDS_PATH + 'gym/metal.wav')
         while not self._end_game and not self.quit:
             self._clock.tick(30)
@@ -141,7 +143,7 @@ class WeightLifting(HUD):
 
             self._weight()
 
-            self._control_events(metal_sound)
+            self._control_events(metal_sound,sound)
 
             if self.show_tutor:
                 self._show_tutor()

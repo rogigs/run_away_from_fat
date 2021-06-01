@@ -195,24 +195,27 @@ class Marathon(HUD):
         else:
             self._pos_y_obstacles_aux[0] += self._velocity
     
-    def _colision_boost(self, left, right, sound):
+    def _colision_boost(self, left, right, sound, state):
         if left == 320 and right == 520 and self._random_pos_boost == 0:
             self._pos_y_boost = -900
             self._boost = True
-            sound.play()
+            if state==True:
+                sound.play()
         elif left == 540 and right == 740 and self._random_pos_boost == 1:
             self._pos_y_boost = -900
-            self._boost = True
-            sound.play()
+            self._boost = True 
+            if state==True:
+                sound.play()
         #right
         elif left == 760 and right == 960 and self._random_pos_boost == 2:
             self._pos_y_boost = -900
             self._boost = True
-            sound.play()
+            if state==True:
+                sound.play()
         else:
             self._boost = False
             
-    def _colision(self, sound):
+    def _colision(self, music, sound):
         adversary_left = (self._random_pos_adversary == 0 or self._random_pos_adversary_aux == 0 ) 
         adversary_middle = (self._random_pos_adversary == 1 or self._random_pos_adversary_aux == 1 ) 
         adversary_right = (self._random_pos_adversary == 2 or self._random_pos_adversary_aux == 2 ) 
@@ -220,7 +223,7 @@ class Marathon(HUD):
         [left, right] = self._pista()
 
         if self._if_random_boost == 3:
-            self._colision_boost(left, right, sound)
+            self._colision_boost(left, right, music,sound)
 
         if self._random_number_adversary == 1:
             self._random_pos_adversary_aux = -1
@@ -291,15 +294,16 @@ class Marathon(HUD):
         
         return difficult
 
-    def marathon(self, character, status): 
+    def marathon(self, character, status,sound): 
         font = pygame.font.Font("assets/font/FreePixel.ttf", 40)
         pygame.time.set_timer(self._CLOCKTICK, 1000)    
         
         pos_y_finish = 0 
         line = 0
-        pygame.mixer.init()
-        pygame.mixer.music.load(SOUNDS_PATH+'marathon/background.mp3')
-        pygame.mixer.music.play(-1)
+        if sound == True:
+            pygame.mixer.init()
+            pygame.mixer.music.load(SOUNDS_PATH+'marathon/background.mp3')
+            pygame.mixer.music.play(-1)
         boost_sound = pygame.mixer.Sound(SOUNDS_PATH+'marathon/boost.wav')
         
         self._control_character(character)
@@ -345,7 +349,7 @@ class Marathon(HUD):
 
                     self._obstacles()
 
-                    self._colision(boost_sound)
+                    self._colision(boost_sound,sound)
     
 
             self.show_pause_button()
