@@ -127,9 +127,9 @@ class Controller:
                     pass
 
             ex = Data.get_next_exercise()
-            ex = "strength"
+            ex = "marathon"
             if ex == "marathon":
-                result, time, level = Marathon(self.screen).marathon(Data.get_character()[0], Data.get_status())
+                result, time, level = Marathon(self.screen).marathon(Data.get_character()[0], Data.get_status(), self.sound_status)
                 self.marathon_result(time)
             elif ex == "resistance":
                 biking_result = Biking(self.screen).biking_minigame(Data.get_character()[0],
