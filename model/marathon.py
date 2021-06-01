@@ -310,6 +310,10 @@ class Marathon(HUD):
         self._control_character(character)
         difficult = self._control_difficult(status)
         
+
+        while self._random_pos_adversary == self._random_pos_boost or self._random_pos_adversary_aux == self._random_pos_boost:
+                    self._random_pos_boost = random.randint(0, 2)
+
         while True:
             self._pos_y_background -= self._velocity
 
