@@ -267,7 +267,6 @@ class Marathon(HUD):
     def _control_character(self, character):
         if character == "U":
             self._character = "usaim"
-            print(self._character)
         else:
             self._character = "rad"
 

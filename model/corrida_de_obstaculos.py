@@ -23,8 +23,6 @@ class CorridaDeObstaculos(HUD):
         return True
 
     def corrida_obstaculo(self, character, resistance, sound):
-        print(sound)
-
         # Dificuldade
         dificuldade_lista = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10]
         dificuldade = [1000, 2000, 2500]
