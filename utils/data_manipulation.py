@@ -13,7 +13,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS user (
     speed integer,
     strength integer,
     resistance integer,
-    PRIMARY KEY (name, days)
+    PRIMARY KEY (name)
 )""")
 conn.commit()
 conn.close()
@@ -39,13 +39,15 @@ class Data:
         try:
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
-            if not c.execute("SELECT * FROM user WHERE name=? AND days=0", (name,)).fetchone():
+            result = False
+            if not c.execute("SELECT * FROM user WHERE name=?", (name,)).fetchone():
                 c.execute("INSERT INTO user values (?, ?, ?, ?, ?, ?, ?, ?)",
                           [name, who, 0, 0, 'speed', 0, 0, 0])
                 config.USERNAME = name
+                result = True
             conn.commit()
             conn.close()
-            return True
+            return result
         except Exception as ex:
             print(ex, "create_new_person")
             return False
