@@ -122,7 +122,7 @@ class Menu:
             self.drop_new()
         elif (1050 <= x <=1050+self.sound_img.get_width() and 
                550 <= y <= 550+self.sound_img.get_height()):
-            self.change_sound_status() 
+            self.change_sound_status()
         elif (self.width / 3 <= x <= self.width / 3 + self.leave_img.get_width() and
               self.height / 5 * 4 <= y <= self.height / 5 * 4 + self.leave_img.get_height()):
             self.drop_leave()
