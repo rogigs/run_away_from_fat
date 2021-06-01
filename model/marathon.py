@@ -10,7 +10,6 @@ class Marathon(HUD):
         super().__init__(screen) 
 
         self.show_tutor = True
-        self._character = "usaim"
 
         self._clock = pygame.time.Clock()
         self._time_clock = 12
@@ -24,11 +23,7 @@ class Marathon(HUD):
         self._number_velocity = 20
         self._velocity = self._number_velocity
 
-        self._images = {
-            "character": [True, "marathon/" + self._character + "_run_1.png", "marathon/usaim_run_2.png"],
-            "runner1": [True, "marathon/usaim_run_1.png", "marathon/usaim_run_2.png"],
-            "runner2": [True, "marathon/usaim_run_1.png", "marathon/usaim_run_2.png"],
-        }
+        self._images = {}
 
         self._pos_y_obstacles = 100
         self._pos_y_boost = 100
@@ -86,7 +81,7 @@ class Marathon(HUD):
             
             if self._boost:  
                 self._aux_boost += 1
-                self._time_clock = 0            
+                self._time_clock = 50    
                 if self._aux_boost > 3:
                     self._aux_boost = 0
                     self._boost = False
@@ -178,13 +173,13 @@ class Marathon(HUD):
 
     def _pista(self):
         #left
-        if self._pos_x_character > 320 and self._pos_x_character < 520 and self._pos_y_obstacles + 20 > self._size_screen[3] - 100:
+        if self._pos_x_character > 320 and self._pos_x_character < 520 and self._pos_y_obstacles + 80 > self._size_screen[3] - 100:
             return [320, 520]
         #middle
-        elif self._pos_x_character > 540 and self._pos_x_character < 740  and self._pos_y_obstacles + 20 > self._size_screen[3] - 100:
+        elif self._pos_x_character > 540 and self._pos_x_character < 740  and self._pos_y_obstacles + 80 > self._size_screen[3] - 100:
             return [540, 740]
         #right
-        elif self._pos_x_character > 760 and self._pos_x_character < 960 and self._pos_y_obstacles + 20 > self._size_screen[3] - 100:
+        elif self._pos_x_character > 760 and self._pos_x_character < 960 and self._pos_y_obstacles + 80 > self._size_screen[3] - 100:
             return [760, 960]
         else:
             return [0,0]
@@ -266,11 +261,18 @@ class Marathon(HUD):
 
     def _control_character(self, character):
         if character == "U":
-            self._character = "usaim"
-        else:
-            self._character = "rad"
+            self._images = {"character": [True, "marathon/usaim_run_1.png", "marathon/usaim_run_2.png"],
+                                    "runner1": [True, "marathon/oponent_1_1.png", "marathon/oponent_1_2.png"],
+                                    "runner2": [True, "marathon/oponent_2_1.png", "marathon/oponent_2_2.png"],
+                                }
+        if character == "R":
+                self._images = {"character": [True, "marathon/rad_run_1.png", "marathon/rad_run_2.png"],
+                                    "runner1": [True, "marathon/r_oponent_1_1.png", "marathon/r_oponent_1_2.png"],
+                                    "runner2": [True, "marathon/r_oponent_2_1.png", "marathon/r_oponent_2_2.png"],
+                                } 
 
     def _control_difficult(self, status):
+        print(status)
         resistance = status["resistance"]
         speed = status["speed"]
         strength = status["strength"]
