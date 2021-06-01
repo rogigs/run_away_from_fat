@@ -28,6 +28,15 @@ class NewGame:
             (16, 16),
             (16 + self.backbutton.get_width(), 16 + self.backbutton.get_height())
         ]
+        self.input_field = {
+            "image": pygame.transform.scale(pygame.image.load("assets/img/fundo-cinza-pressed.png").convert_alpha(),
+                                            (420, 50)),
+            "bounds": [
+                (self.width // 3, 225),
+                (self.width // 3 * 2, 275),
+            ],
+            "content": ""
+        }
 
     def show_usaim(self):
         self.screen.blit(self.usaim, self.usaim_bounds[0])
@@ -44,6 +53,18 @@ class NewGame:
         render_img = img.get_rect().center = self.width // 2 - img.get_width() // 2, 32
         self.screen.blit(img, render_img)
 
+    def show_input(self):
+        font = pygame.font.Font("assets/font/FreePixel.ttf", 32)
+        text = font.render("Nome: " + self.input_field["content"], False, (0, 0, 0))
+        self.screen.blit(self.input_field["image"], self.input_field["bounds"][0])
+        self.screen.blit(text, (self.input_field["bounds"][0][0] + 12, self.input_field["bounds"][0][1] + 12))
+
+    def handle_typing(self, event):
+        if event.key == K_BACKSPACE:
+            self.input_field["content"] = self.input_field["content"][:-1]
+        elif len(self.input_field["content"]) < 19:
+            self.input_field["content"] += event.unicode
+
     def show(self):
         self.on = True
         while self.on:
@@ -59,7 +80,11 @@ class NewGame:
                         return "created"
                     elif result == "back":
                         return "back"
+                elif event.type == KEYDOWN:
+                    self.handle_typing(event)
+
             self.screen.blit(self.bg, (0, 0))
+            self.show_input()
             self.show_usaim()
             self.show_radcliffe()
             self.show_backbutton()
