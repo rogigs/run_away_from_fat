@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from pygame.mixer import Sound
 from model.corrida_de_obstaculos import CorridaDeObstaculos
 from model.weight_lifting import WeightLifting
 from model.marathon import Marathon
@@ -12,7 +13,14 @@ class Controller:
         self.screen = screen
         self.width, self.height = pygame.display.get_surface().get_size()
         self.on = True
+        self.sound_status= True
 
+    def change_sound_status(self):
+        if self.sound_status == True:
+            self.sound_status = False
+        elif self.sound_status==False:
+            self.sound_status = True
+    
     def minigame_end(self, result, kind):
         if type(result) == int:
             Data.increase_day()
@@ -81,18 +89,19 @@ class Controller:
             
 
 
-            # ex = Data.get_next_exercise()
-            # if ex == "marathon":
-            result, time, level = Marathon(self.screen).marathon(Data.get_character()[0], Data.get_status())
-            self.minigame_end(result)
-            # elif ex == "resistance":
-            #     biking_result = Biking(self.screen).biking_minigame(Data.get_character()[0],
-            #                                                         Data.get_status()["resistance"])
-            #     self.minigame_end(biking_result, "resistance")
-            # elif ex == "strength":
-            #     weight_result = WeightLifting(self.screen, None).weightlifting(Data.get_status()["strength"])
-            #     self.minigame_end(weight_result, "strength")
-            # else:
-            #     corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
-            #                                                                         Data.get_status()["speed"])
-            #     self.minigame_end(corrida_result, "speed")
+            ex = Data.get_next_exercise()
+            if ex == "marathon":
+                result, time, level = Marathon(self.screen).marathon(Data.get_character()[0], Data.get_status(),self.sound_status)
+                self.minigame_end(result)
+            elif ex == "resistance":
+                biking_result = Biking(self.screen).biking_minigame(Data.get_character()[0],
+                                                                     Data.get_status()["resistance"],self.sound_status)
+                self.minigame_end(biking_result, "resistance")
+            elif ex == "strength":
+                weight_result = WeightLifting(self.screen, None).weightlifting(Data.get_status()["strength"],self.sound_status)
+                self.minigame_end(weight_result, "strength")
+            else:
+                corrida_result = CorridaDeObstaculos(self.screen).corrida_obstaculo(Data.get_character()[0],
+                                                                                    Data.get_status()["speed"],
+                                                                                    self.sound_status)
+                self.minigame_end(corrida_result, "speed")

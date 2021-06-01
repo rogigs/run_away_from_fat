@@ -22,7 +22,8 @@ class CorridaDeObstaculos(HUD):
         self.reset_imgs()
         return True
 
-    def corrida_obstaculo(self, character, resistance):
+    def corrida_obstaculo(self, character, resistance, sound):
+        print(sound)
 
         # Dificuldade
         dificuldade_lista = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10]
@@ -44,11 +45,9 @@ class CorridaDeObstaculos(HUD):
         # mostra a tela depois que o nivel acaba
         def end_game():
             if loser == True:
-                lose_effect.play()
                 pygame.mixer.quit()
                 return 0
             if loser == False:
-                win_effect.play()
                 pygame.mixer.quit()
                 return 10
 
@@ -145,13 +144,11 @@ class CorridaDeObstaculos(HUD):
         bg_pista_x = 0
 
         # efeitos sonoros / musica
-        hit_sound = pygame.mixer.Sound(SOUNDS_PATH + 'corridaObsSounds/hitSound.mp3')
-        jump_sound = pygame.mixer.Sound(SOUNDS_PATH + 'corridaObsSounds/jump.mp3')
-        pygame.mixer.music.load(SOUNDS_PATH + 'corridaObsSounds/themeSong.mp3')
-        pygame.mixer.music.play(-1)
-        lose_effect = pygame.mixer.Sound(SOUNDS_PATH + 'corridaObsSounds/youLose.mp3')
-        win_effect = pygame.mixer.Sound(SOUNDS_PATH + 'corridaObsSounds/youWin.mp3')
-
+        if sound == True:
+            hit_sound = pygame.mixer.Sound(SOUNDS_PATH + 'corridaObsSounds/hitSound.mp3')
+            jump_sound = pygame.mixer.Sound(SOUNDS_PATH + 'corridaObsSounds/jump.mp3')
+            pygame.mixer.music.load(SOUNDS_PATH + 'corridaObsSounds/themeSong.mp3')
+            pygame.mixer.music.play(-1)
         # sprite corrida
         if character == "U":
             run_frame2 = pygame.image.load(IMAGES_PATH + 'corridaObsImgs/men2.png').convert_alpha()
@@ -218,7 +215,11 @@ class CorridaDeObstaculos(HUD):
                 # função que faz o personagem pular, se o mesmo ja estiver fora do chão, não poderá ser acionado de novo
                 if pygame.key.get_pressed()[K_SPACE]:
                     if runner_rect.bottom == 550:
-                        jump_sound.play()
+                        
+                        try:
+                            jump_sound.play()
+                        except:
+                            pass    
                         runner_state = 0
                         runner_state -= 14
                         if runner_rect.top <= 200:
@@ -278,7 +279,10 @@ class CorridaDeObstaculos(HUD):
                 # chama a função que checa colisões, passando como parametro a lista de obstaculos
                 if check_collision(obstaculos_list):
                     # toca efeito sonoro
-                    hit_sound.play()
+                    try:
+                        hit_sound.play()
+                    except:
+                        pass   
                     # quando detectado colisão, adiciona um obstaculo na lista de obstaculos caidos
                     obstaculo_caido_list.append(obstaculo_caido.get_rect(bottomleft=(obstaculos_list[0].bottomright)))
                     # deleta o obstaculo onde aconteceu a colisão
