@@ -21,13 +21,12 @@ class Menu:
         self.new_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "novo-jogo.png").convert_alpha())
         self.leave_img = self.scale_it(pygame.image.load(MENU_IMAGES_PATH + "sair.png").convert_alpha())
         self.sound_img = pygame.transform.scale( pygame.image.load(MENU_IMAGES_PATH + "sound_on.png").convert_alpha(), (215, 150))
-        self.sound_status = True
 
     def change_sound_status(self):
-        if self.sound_status == True:
+        if self.controller.sound_status == True:
             self.sound_img = pygame.transform.scale(pygame.image.load(MENU_IMAGES_PATH + "sound_off.png").convert_alpha(), (215, 150))
             self.controller.change_sound_status()
-        elif self.sound_status == False:
+        elif self.controller.sound_status == False:
             self.sound_img = pygame.transform.scale(pygame.image.load(MENU_IMAGES_PATH + "sound_on.png").convert_alpha(), (215, 150))
             self.controller.change_sound_status()
 
@@ -123,8 +122,7 @@ class Menu:
             self.drop_new()
         elif (1050 <= x <=1050+self.sound_img.get_width() and 
                550 <= y <= 550+self.sound_img.get_height()):
-            self.change_sound_status()
-            print(self.controller.sound_status) 
+            self.change_sound_status() 
         elif (self.width / 3 <= x <= self.width / 3 + self.leave_img.get_width() and
               self.height / 5 * 4 <= y <= self.height / 5 * 4 + self.leave_img.get_height()):
             self.drop_leave()
