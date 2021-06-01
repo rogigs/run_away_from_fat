@@ -67,6 +67,45 @@ class Controller:
         self.write(text="Nenhum ponto de status lhe foi atribuido", size=32,
                    where=(self.width / 2, self.height / 2 + 100))
 
+    @classmethod
+    def get_position(cls, time):
+        if time >= 30:
+            return 1
+        elif time >= 25:
+            return 2
+        elif time >= 20:
+            return 3
+        return 0
+
+    def marathon_result(self, time):
+        if type(time) == int:
+            Data.increase_day()
+            back = pygame.Surface((self.width, self.height))
+            back.set_alpha(215)
+            back.fill((0, 0, 0))
+            self.screen.blit(back, (0, 0))
+            self.write(text=f"Fim da Maratona", size=72, where=(self.width / 2, 150))
+            position = self.get_position(time)
+            if position > 0:
+                color = {1: (0, 255, 0), 2: (255, 255, 0), 3: (255, 128, 0)}
+                self.write(text=f"{position}º Posição", size=48, where=(self.width / 2, 300), color=color[position])
+                self.write(text=f"Você subiu no ranking!", size=38, where=(self.width / 2, 400))
+                self.write(text=f"Sua próxima maratona será mais desafiadora!", size=38, where=(self.width / 2, 450))
+            else:
+                self.write(text=f"Você não alcançou o pódio.", size=48, where=(self.width / 2, 350), color=(255, 0, 0))
+            self.write(text="Pressione <Enter> para voltar a treinar", size=32,
+                       where=(self.width / 2, self.height / 2 + 200))
+            while True:
+                for event in pygame.event.get():
+                    if event.type == QUIT:
+                        pygame.quit()
+                        exit()
+                    elif event.type == KEYUP and event.key == K_RETURN:
+                        return
+                pygame.display.update()
+        self.on = False
+        pygame.mixer.quit()
+
     def show(self):
         self.on = True
         while self.on:
@@ -78,13 +117,12 @@ class Controller:
                     pass
                 elif event.type == MOUSEBUTTONUP:
                     pass
-            
-
 
             # ex = Data.get_next_exercise()
             # if ex == "marathon":
             result, time, level = Marathon(self.screen).marathon(Data.get_character()[0], Data.get_status())
-            self.minigame_end(result)
+            self.marathon_result(time)
+            # self.minigame_end(result)
             # elif ex == "resistance":
             #     biking_result = Biking(self.screen).biking_minigame(Data.get_character()[0],
             #                                                         Data.get_status()["resistance"])

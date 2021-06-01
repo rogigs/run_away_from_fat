@@ -362,5 +362,5 @@ class Marathon(HUD):
             if self._temporizador == 0 and self.end_game < self._end_game_value:
                 return 0, self._temporizador, difficult
             elif self.quit:
-                return None
+                return None, None, None
                 
