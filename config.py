@@ -6,3 +6,5 @@ FONT_PATH = "assets" + sep + "font" + sep
 HUD_PATH = "assets" + sep + "img" + sep + "hud" + sep
 PAUSE_PATH = "assets" + sep + "img" + sep + "pause" + sep
 SOUNDS_PATH = "assets" + sep + "sounds" + sep
+
+USERNAME = None
