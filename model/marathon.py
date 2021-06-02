@@ -38,7 +38,7 @@ class Marathon(HUD):
         self._random_number_adversary = 1
         self._random_pos_adversary = random.randint(0, 2)
         self._random_pos_adversary_aux = self._random_pos_adversary
-        self._if_random_boost = random.randint(0, 5)
+        self._if_random_boost = random.randint(0, 3)
         self._random_pos_boost = random.randint(0, 2)
         self._pos_x_adversary = [self._pos_x_character - 270, self._pos_x_character - 70, self._pos_x_character + 130]
         self._pos_y_obstacles_aux = [0 , 0]
@@ -105,7 +105,7 @@ class Marathon(HUD):
 
                 
     def _draw_boost(self):
-        if self._if_random_boost == 3:
+        if self._if_random_boost == 1:
             flash = pygame.image.load(IMAGES_PATH +"marathon/flash.png").convert_alpha()
             flash = pygame.transform.smoothscale( flash, (100, 100) )
             
