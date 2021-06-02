@@ -1,4 +1,6 @@
 import pygame
+
+from model.load_game import LoadGame
 from utils.data_manipulation import Data
 from model.new_game import NewGame
 from config import MENU_IMAGES_PATH, IMAGES_PATH
@@ -65,7 +67,8 @@ class Menu:
 
     def drop_continue(self):
         """Changes 'continuar' image to its unpressed version."""
-        self.controller.show()
+        if self.has_save:
+            LoadGame(self.screen).show()
 
     def press_new(self):
         """Changes 'Novo jogo' image to its pressed version."""

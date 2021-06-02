@@ -104,12 +104,17 @@ class NewGame:
 
     def process_mouseup(self, pos):
         self.reset_imgs()
-        if in_bounds(pos, self.usaim_bounds):
-            Data.create_new_person("U")
-            return "created"
-        if in_bounds(pos, self.radcliffe_bounds):
-            Data.create_new_person("R")
-            return "created"
+        if self.input_field["content"] != "":
+            if in_bounds(pos, self.usaim_bounds):
+                if Data.create_new_person("U", self.input_field["content"]):
+                    return "created"
+                else:
+                    self.input_field["content"] = ""
+            elif in_bounds(pos, self.radcliffe_bounds):
+                if Data.create_new_person("R", self.input_field["content"]):
+                    return "created"
+                else:
+                    self.input_field["content"] = ""
         if in_bounds(pos, self.backbutton_bounds):
             return "back"
 
