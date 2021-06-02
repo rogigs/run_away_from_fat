@@ -136,7 +136,7 @@ class Controller:
                                                                     Data.get_status()["resistance"], self.sound_status)
                 self.minigame_end(biking_result, "resistance")
             elif ex == "strength":
-                weight_result = WeightLifting(self.screen, None).weightlifting(Data.get_status()["strength"],
+                weight_result = WeightLifting(self.screen).weightlifting(Data.get_character()[1],Data.get_status()["strength"],
                                                                                self.sound_status)
                 self.minigame_end(weight_result, "strength")
             else:

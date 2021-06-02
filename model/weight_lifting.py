@@ -6,9 +6,13 @@ from utils.position import in_bounds
 
 
 class WeightLifting(HUD):
-    def __init__(self, screen, character):
+    def __init__(self, screen):
         super().__init__(screen)
-        self.character = character
+        self._character = {
+            "down": "",
+            "medium": "",
+            "up": ""
+        }
 
         self._clock = pygame.time.Clock()
         self._height_begin = 675
@@ -55,9 +59,9 @@ class WeightLifting(HUD):
             self._player_win = True
             self._height_machine = self._height_begin
             self._height_player = self._height_begin
-
+ 
     def _control_velocity_player(self):
-        character = pygame.image.load(IMAGES_PATH + "weightlifiting/rad_weight_medium.png").convert_alpha()
+        character = pygame.image.load(IMAGES_PATH + self._character["medium"]).convert_alpha()
         self.screen.blit(character, (600, 0))
         self._height_player -= self._velocity_space
 
@@ -111,9 +115,22 @@ class WeightLifting(HUD):
             self._velocity_space = 30
             self.weight = 100
 
-    def weightlifting(self, strength,sound):
+    def _what_character(self, character):
+        if character == "U":
+            self._character["down"] = "weightlifiting/usaim_weight_down.png"
+            self._character["medium"] = "weightlifiting/usaim_weight_medium.png"
+            self._character["up"] = "weightlifiting/usaim_weight_up.png"
+        if character == "R":
+            self._character["down"] = "weightlifiting/rad_weight_down.png"
+            self._character["medium"] = "weightlifiting/rad_weight_medium.png"
+            self._character["up"] = "weightlifiting/rad_weight_up.png"
+
+    def weightlifting(self, character, strength, sound):
         self._end_game = False
         self._difficult(strength)
+
+        self._what_character(character)
+
         if sound ==True:  
             pygame.mixer.init()
             pygame.mixer.music.load(SOUNDS_PATH + 'gym/back.mp3')
@@ -126,9 +143,9 @@ class WeightLifting(HUD):
             bg_surface = pygame.transform.smoothscale(bg_surface, (1280, 720))
 
             if self._height_player < 400:
-                character = pygame.image.load(IMAGES_PATH + "weightlifiting/rad_weight_up.png").convert_alpha()
+                character = pygame.image.load(IMAGES_PATH + self._character["up"]).convert_alpha()
             else:
-                character = pygame.image.load(IMAGES_PATH + "weightlifiting/rad_weight_down.png").convert_alpha()
+                character = pygame.image.load(IMAGES_PATH + self._character["medium"]).convert_alpha()
 
             player = pygame.image.load(IMAGES_PATH + "weightlifiting/machine_arrow.png").convert_alpha()
             machine = pygame.image.load(IMAGES_PATH + "weightlifiting/user_arrow.png").convert_alpha()
