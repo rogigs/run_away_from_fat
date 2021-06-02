@@ -15,7 +15,7 @@ class Marathon(HUD):
         self._time_clock = 12
         self._time_clock_initial = self._time_clock
         self._CLOCKTICK = pygame.USEREVENT+3
-        self._temporizador = 60
+        self._temporizador = 30
         self._initial_temp = self._temporizador
 
         self._size_screen = self.screen.get_rect()
@@ -301,8 +301,9 @@ class Marathon(HUD):
         
         pos_y_finish = 0 
         line = 0
+        
+        pygame.mixer.init()        
         if sound == True:
-            pygame.mixer.init()
             pygame.mixer.music.load(SOUNDS_PATH+'marathon/background.mp3')
             pygame.mixer.music.play(-1)
         boost_sound = pygame.mixer.Sound(SOUNDS_PATH+'marathon/boost.wav')

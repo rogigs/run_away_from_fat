@@ -132,7 +132,6 @@ class WeightLifting(HUD):
         self._what_character(character)
 
         if sound ==True:  
-            pygame.mixer.init()
             pygame.mixer.music.load(SOUNDS_PATH + 'gym/back.mp3')
             pygame.mixer.music.play(-1)
         metal_sound = pygame.mixer.Sound(SOUNDS_PATH + 'gym/metal.wav')
