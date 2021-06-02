@@ -244,7 +244,8 @@ class Marathon(HUD):
         if self._images[who][0]:
             sprite = pygame.image.load(IMAGES_PATH + self._images[who][1]).convert_alpha()
             sprite = pygame.transform.smoothscale( sprite, (120, 100) )
-            self._images[who][0] = False
+            if  not self.show_tutor:
+                self._images[who][0] = False
         else:
             sprite = pygame.image.load(IMAGES_PATH + self._images[who][2]).convert_alpha()
             sprite = pygame.transform.smoothscale( sprite, (120, 100) )
@@ -253,7 +254,7 @@ class Marathon(HUD):
     
     def _show_tutor(self):
         if self.show_tutor:
-            tutorial = pygame.image.load(IMAGES_PATH + "weightlifiting/tutorial.png").convert_alpha()
+            tutorial = pygame.image.load(IMAGES_PATH + "marathon/tutor.png").convert_alpha()
             tutorial_print = tutorial.get_rect(center=(1280/2 - 25, 720/2 + 25))
             pygame.draw.rect(self.screen, [0, 0, 0], [284, 264, 633, 201])
           
@@ -272,7 +273,6 @@ class Marathon(HUD):
                                 } 
 
     def _control_difficult(self, status):
-        print(status)
         resistance = status["resistance"]
         speed = status["speed"]
         strength = status["strength"]
@@ -315,12 +315,13 @@ class Marathon(HUD):
                     self._random_pos_boost = random.randint(0, 2)
 
         while True:
-            self._pos_y_background -= self._velocity
+            if not self.show_tutor:
+                self._pos_y_background -= self._velocity
 
             self._clock.tick(self._time_clock)
                    
             track = pygame.image.load(IMAGES_PATH + "marathon/track.png").convert_alpha()
-            outside_track = pygame.image.load(IMAGES_PATH + "marathon/outside.png").convert_alpha()
+            outside_track = pygame.image.load(IMAGES_PATH + "marathon/outsid.png").convert_alpha()
             outside_track = pygame.transform.smoothscale( outside_track, (380, 1800) )
 
             self.screen.blit(outside_track, [0, self._pos_y_background])
