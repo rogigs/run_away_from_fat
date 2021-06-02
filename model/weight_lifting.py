@@ -114,8 +114,8 @@ class WeightLifting(HUD):
     def weightlifting(self, strength,sound):
         self._end_game = False
         self._difficult(strength)
+        pygame.mixer.init()
         if sound ==True:  
-            pygame.mixer.init()
             pygame.mixer.music.load(SOUNDS_PATH + 'gym/back.mp3')
             pygame.mixer.music.play(-1)
         metal_sound = pygame.mixer.Sound(SOUNDS_PATH + 'gym/metal.wav')

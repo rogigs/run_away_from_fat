@@ -106,7 +106,7 @@ class Biking(HUD):
                 # mostra o tutorial do nivel
 
         def show_tutor():
-            pygame.draw.rect(screen, [0, 55, 0], [264, 254, 680, 220])
+            pygame.draw.rect(screen, [0, 0, 0], [264, 254, 680, 220])
             screen.blit(tutorial, (tutorial_print))
 
         pygame.init()
@@ -193,7 +193,7 @@ class Biking(HUD):
 
         CONTADOR = pygame.USEREVENT + 3
         pygame.time.set_timer(CONTADOR, 1000)  # configurado o timer do Pygame para execução a cada 1 segundo
-        temporizador = 60
+        temporizador = 15
 
         font = pygame.font.Font("assets/font/FreePixel.ttf", 40)
 
@@ -221,14 +221,14 @@ class Biking(HUD):
                     sys.exit()
 
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_f:
+                    if event.key == pygame.K_s:
                         showtutor = False
                         game_active = True
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_w:
+                    if event.key == pygame.K_UP:
                         biker_y = 220
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_s:
+                    if event.key == pygame.K_DOWN:
                         biker_y = 462
 
                 # evento que faz a animação
