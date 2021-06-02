@@ -300,7 +300,6 @@ class Marathon(HUD):
         pos_y_finish = 0 
         line = 0
         if sound == True:
-            
             pygame.mixer.music.load(SOUNDS_PATH+'marathon/background.mp3')
             pygame.mixer.music.play(-1)
         pygame.mixer.init()
