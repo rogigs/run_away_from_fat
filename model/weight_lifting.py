@@ -57,7 +57,7 @@ class WeightLifting(HUD):
             self._height_player = self._height_begin
 
     def _control_velocity_player(self):
-        character = pygame.image.load(IMAGES_PATH + "weightlifiting/usaim_weight_medium.png").convert_alpha()
+        character = pygame.image.load(IMAGES_PATH + "weightlifiting/rad_weight_medium.png").convert_alpha()
         self.screen.blit(character, (600, 0))
         self._height_player -= self._velocity_space
 
@@ -126,9 +126,9 @@ class WeightLifting(HUD):
             bg_surface = pygame.transform.smoothscale(bg_surface, (1280, 720))
 
             if self._height_player < 400:
-                character = pygame.image.load(IMAGES_PATH + "weightlifiting/usaim_weight_up.png").convert_alpha()
+                character = pygame.image.load(IMAGES_PATH + "weightlifiting/rad_weight_up.png").convert_alpha()
             else:
-                character = pygame.image.load(IMAGES_PATH + "weightlifiting/usaim_weight_down.png").convert_alpha()
+                character = pygame.image.load(IMAGES_PATH + "weightlifiting/rad_weight_down.png").convert_alpha()
 
             player = pygame.image.load(IMAGES_PATH + "weightlifiting/machine_arrow.png").convert_alpha()
             machine = pygame.image.load(IMAGES_PATH + "weightlifiting/user_arrow.png").convert_alpha()
