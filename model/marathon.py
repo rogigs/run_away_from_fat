@@ -321,12 +321,13 @@ class Marathon(HUD):
                    
             track = pygame.image.load(IMAGES_PATH + "marathon/track.png").convert_alpha()
             outside_track = pygame.image.load(IMAGES_PATH + "marathon/outside.png").convert_alpha()
-            
+            outside_track = pygame.transform.smoothscale( outside_track, (380, 1800) )
+
             self.screen.blit(outside_track, [0, self._pos_y_background])
             self.screen.blit(outside_track, [900, self._pos_y_background])        
             self.screen.blit(track, (self._size_screen[2]/2 - 300, 0))
 
-            if self._pos_y_background < -100:
+            if self._pos_y_background < -1600:
                 self._pos_y_background = 0
 
              # WINNER
